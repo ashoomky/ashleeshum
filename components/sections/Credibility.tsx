@@ -19,11 +19,9 @@ import LogoRow from '@/components/LogoRow'
 import {
   brands,
   brandsHeading,
-  credibilityCaption,
   credibilityProps,
   experience,
   experienceHeading,
-  RELATIONSHIP_FOOTNOTE,
   tools,
 } from '@/content'
 
@@ -108,32 +106,24 @@ export default function Credibility() {
       </h2>
 
       {/*
-        Brands, each turned 3deg to sit with the ribbon. The spec's
-        "2475-2489 line" is the line they are centred on rather than a top
-        edge — centring on it puts them within a couple of px of the ribbon's
-        own centre, which a top edge does not.
+        Brands, turned 3deg to sit with the ribbon and seated on its centre
+        line rather than a fixed y — see LogoRow. The spec's "2475-2489 line"
+        is where that centre crosses the middle of the canvas; from there the
+        3deg turn carries it down about 38px by the right of this row, and the
+        row follows it.
 
         FROM THE SCREENSHOT: 160 square rather than the spec's ~128, which
-        nearly fills the ribbon as the screenshot shows. At that size they no
-        longer fit starting from the spec's x1057 — three of them plus gaps
-        would run to 1569, past the canvas — so the row is shifted left to end
-        at 1490 instead.
-
-        All three are gifted rather than paid, so each carries a marker and the
-        footnote renders below. That footnote clears the ribbon rather than
-        sitting just under the logos: it is cream and so is the ribbon, and the
-        3deg turn drops the ribbon's bottom edge to y377 by the right end of
-        this row, so anything higher is cream on cream and simply disappears.
+        nearly fills the ribbon. At that size three no longer fit starting from
+        the spec's x1057 — they would run to 1569, past the canvas — so the row
+        is shifted left to end at 1490 instead.
       */}
       <LogoRow
         items={brands}
         lefts={[978, 1154, 1330]}
-        centreY={250}
+        centreY={252.78}
         width={160}
         height={160}
         rotate={3}
-        footnote={RELATIONSHIP_FOOTNOTE}
-        footnoteTop={390}
       />
 
       {/*
@@ -146,30 +136,20 @@ export default function Credibility() {
         slot as far as its own proportions allow: these run from 1.74 to 3.45
         wide-to-tall, so HubSpot comes out 200x58 where DaVinci is 120x120.
 
-        Centred on the ribbon's own middle rather than the spec's 2800-2811
-        line. The -1deg turn swings that middle from y619 at the left of the
-        row to y593 at the right, so 606 is the one value that keeps all six
-        on it.
+        Seated on the ribbon's own centre rather than the spec's 2800-2811
+        line, and following it: the -1deg turn lifts that centre from y594 at
+        the right of the row to y617 at the left, so no single y keeps all six
+        on the ribbon and each takes the one belonging to its own x.
       */}
       <LogoRow
         items={[...experience, ...tools]}
         lefts={[12, 269, 527, 784, 1042, 1299]}
-        centreY={606}
+        centreY={605.78}
         width={200}
         height={120}
+        rotate={-1}
       />
 
-      {/*
-        PLACED BY EYE, and the least certain thing here: this caption is not in
-        figmaspec at all — neither its position, size, nor what it belongs to.
-        It sits under the phone on the assumption that it captions it.
-      */}
-      <p
-        className="absolute text-center font-body text-body-sm text-cream"
-        style={{ top: 800, left: 565, width: 375 }}
-      >
-        {credibilityCaption}
-      </p>
     </Band>
   )
 }

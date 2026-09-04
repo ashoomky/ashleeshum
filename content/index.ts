@@ -18,11 +18,15 @@ export type Reel = {
 }
 
 /**
- * `relationship` drives honest labelling site-wide.
+ * What each brand relationship actually was.
  *  'paid'    a real paid partnership
  *  'gifted'  gifted product, PR package, unpaid collab
  *  'concept' self-directed, no brand relationship
- * Anything that is not 'paid' renders with a marker and the footnote below.
+ *
+ * Recorded but NOT currently shown: Credibility used to mark anything that
+ * was not 'paid' with an asterisk and a footnote, and that was taken out. The
+ * field stays because it is true of the work and figmaspec asks for each one
+ * to be confirmed before the logos ship — not because anything renders it.
  */
 export type Relationship = 'paid' | 'gifted' | 'concept'
 
@@ -149,16 +153,14 @@ export const brandsHeading = "brands i've worked with"
 // carries experience and tools, so the title follows the content.
 export const experienceHeading = 'experience / tools'
 
-export const RELATIONSHIP_FOOTNOTE =
-  'Gifted or collaborative partnership. Unmarked pieces are self-directed concepts.'
-
 export const brands: Brand[] = [
   { name: 'Charles & Keith', logo: '/logos/charles-and-keith.png', relationship: 'gifted' },
   { name: 'LEWKIN', logo: '/logos/lewkin.png', relationship: 'gifted' },
   { name: 'dailybean', logo: '/logos/dailybean.png', relationship: 'gifted' },
 ]
 
-// Study and certification. Four logos, on the 2800-2811 line at x12, 245, 488, 713.
+// Study and certification. Rendered in one row with `tools` — six marks, not
+// the four the spec's x12/245/488/713 was written for.
 export const experience: LogoItem[] = [
   { name: 'UOACS', logo: '/logos/uoacs.png' },
   { name: 'Google Analytics 4', logo: '/logos/ga4.png' },
@@ -166,21 +168,14 @@ export const experience: LogoItem[] = [
   { name: 'University of Auckland', logo: '/logos/uoa.png' },
 ]
 
-// Editing software, shown alongside `experience` in the same section.
+// Editing software. Shares Credibility's lower ribbon with `experience`,
+// appended after it.
 export const tools: LogoItem[] = [
   { name: 'CapCut', logo: '/logos/capcut.png' },
   { name: 'DaVinci Resolve', logo: '/logos/davinci.png' },
 ]
 
-/**
- * The caption by the phone mockup. figmaspec records neither a position nor a
- * size for it — it is not in the spec at all — so it is placed by eye in
- * Credibility and the copy is kept here with everything else rather than
- * inline in the section.
- */
-export const credibilityCaption = 'marketing director'
-
-// The star that sits in this section.
+// The star, over the phone's top left corner.
 export const credibilityProps = {
   star: '/props/prop-small-2.png', // cream and black, 8-pointed
 }

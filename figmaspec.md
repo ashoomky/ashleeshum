@@ -41,6 +41,8 @@ Note the 1px overlaps between bands (About starts at 955, not 956). Harmless in 
 | Stat numbers | Bootzy TM | 130 | 3.9px (5.2px on 1.57M) | `#f4f2e0` |
 | Stat labels | Helvetica | 30 | 0.9px | `#f4f2e0` |
 | Section titles ("brands i've worked with", "credentials / experience") | Bootzy TM | 60 | 1.8px | `#f4f2e0` |
+
+The second of those titles **renders as "experience / tools"**, not the Figma wording, since that band carries experience and tools. See `experienceHeading` in `content/`.
 | Pillar initial (L / T / F) | Demo Motherlane | 300 | 9px | `#453643` |
 | Pillar word ("ifestyle content") | Alte Haas Grotesk | 80 | 2.4px | `#453643` |
 | Pillar offer copy | Helvetica | 35 | 1.05px | `#453643` |
@@ -67,7 +69,18 @@ There are **no Figma variables defined in the file**, so there is no token set t
 
 **Stats.** 6,800+ at 139,1998 · 1.57M at 660,1998 · 3+ at 1205,1994. Labels on the 2112–2118 line.
 
-**Credibility.** Phone mockup 375×666 at 565,2352. Brand logos ~128px square at 1057, 1201, 1347 on the 2475–2489 line, each rotated 3°. Credential logos on the 2800–2811 line at x12, 245, 488, 713. Two cream bands 1572.3×173.56 rotated 3° and −1° at y2398 and y2751.
+**Credibility.** Phone mockup 375×666 at 565,2352. Two cream bands 1572.3×173.56 rotated 3° and −1° at y2398 and y2751.
+
+The rest of this band was re-measured from a later screenshot of the frame, and the numbers below supersede the originals — which were: brand logos ~128px square at 1057, 1201, 1347 on the 2475–2489 line, and four credential logos on the 2800–2811 line at x12, 245, 488, 713.
+
+- The **cream bands run the full width of the screen**, not just the canvas. They are wider than 1511 and carry on past both edges.
+- **Brand logos are 160 square**, at 978, 1154, 1330, still rotated 3°. Three at 160 will not fit from the old x1057 — they reach 1569, past the canvas.
+- **The credential row carries six marks, not four**: UOACS, GA4, HubSpot, UoA, then CapCut and DaVinci. Evenly spread at 257 apart from x12, in a 200×120 box.
+- Each row **sits on its band's centre line rather than a fixed y**, so it follows the tilt. Band one's centre falls ~38px between the middle of the canvas and the right of the brand row; band two's rises ~23px across the credential row. A single y leaves a row climbing out of its band.
+- The **star** sits over the phone's top left corner, ~134 wide at 508,2293. The spec previously recorded it as belonging to this band without a coordinate.
+- The **phone's screen is empty**, so the band behind shows through it.
+- **No relationship markers.** An earlier build put an asterisk on each non-paid brand with a footnote under the row; both were removed. `relationship` is still recorded per brand in `content/`, just not drawn.
+- There is **no "marketing director" caption**. One was added from a verbal note and has been removed; it appears nowhere in the frame.
 
 **Pillars.** Phone frames are **309×549**. Lifestyle: three at x115/424/733, y3452. Travel: two at x173/482, y4375, third rotated 90° at 817,4648. Food: three at x428/737/1046, y5344.
 
@@ -81,7 +94,7 @@ Every image below is already in the file. Export at 2x from Figma rather than sc
 
 Hero: monogram A, photostrip, paper strip (`_ (9) 1`), star SVG, three social icons, flower (`___4_-removebg-preview`).
 About: camera (`___2_-removebg-preview`), the decorative element at 1057,999.
-Credibility: phone mockup (`___3_-removebg-preview`), Charles & Keith logo, LEWKIN logo, dailybean logo, UOACS header, GA4 logo, HubSpot logo, UoA logo.
+Credibility: phone mockup (`___3_-removebg-preview`), Charles & Keith logo, LEWKIN logo, dailybean logo, UOACS header, GA4 logo, HubSpot logo, UoA logo, plus the CapCut and DaVinci marks that now share the lower band, and the star that sits on the phone.
 Pillars: reuse the phone mockup; props at 396,3307 / 1237,3727 / 529,4215 / 151,5714.
 How I Work: the winding path SVG (`Vector 1`).
 Contact: flower.
