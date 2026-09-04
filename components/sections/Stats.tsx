@@ -21,8 +21,8 @@ import { stats } from '@/content'
  *
  * The spec places the labels on "the 2112-2118 line" without breaking that
  * down per label, so all three take the top of that range, 201 into the band.
- * It records no x for them either — they are left-aligned to their figure
- * here, which is the reading the numbers support but not one the spec states.
+ * It records no x for them at all, so they are centred under their figure —
+ * see Stat, which does that without measuring anything.
  */
 const LAYOUT = [
   { left: 139, top: 87 }, // 6,800+
