@@ -81,48 +81,30 @@ export default function AboutMe() {
       ))}
 
       {/*
-        The carousel, drawn before the camera so the photo sits behind the art
-        and shows through the screen. The arrows and caption fall outside the
-        camera, so nothing of theirs is covered by it.
+        The carousel. The camera is one of its slides rather than a frame the
+        photos sit inside, so there is no separate camera prop here — it takes
+        its turn in the slot like everything else, and "[vlog]" is simply its
+        caption.
 
-        Screen: the LCD is a transparent cut-out 68,48 into the camera art and
-        352x267 at its rendered size, which puts it at 865,400 in the band.
+        Slot: the camera's own measured box, 614x349 at 797,1307. It is the
+        only slide the spec measures, so it sets the slot, and the rest are
+        letterboxed into it rather than cropped.
 
-        Caption: centred on the camera rather than pinned to the spec's
-        1065,1675. That coordinate is where the placeholder "[vlog]" starts,
-        and "[vlog]" set at this size is about 65 wide, which centres on the
-        camera to within a few px — so centring generalises it to captions of
-        any length. See the note below about what happened to "[vlog]".
+        Caption: centred on the slot rather than pinned to the spec's 1065,1675.
+        That coordinate is where "[vlog]" starts, and "[vlog]" set at this size
+        is about 65 wide, which centres on the camera to within a few px — so
+        centring generalises it to captions of any length.
 
         Arrows: PLACED BY EYE, since they are not in the design at all. Centred
-        on the camera's height and clear of its artwork, which runs 808 to 1400
-        once the file's own padding is taken off.
+        on the slot's height and clear of the camera's artwork, which runs 808
+        to 1400 once the file's own padding is taken off.
       */}
       <AboutCarousel
         slides={aboutSlides}
-        screen={{ top: 400, left: 865, width: 352, height: 267 }}
+        slot={{ top: 352, left: 797, width: 614, height: 349 }}
         caption={{ top: 720, left: 797, width: 614 }}
         arrows={{ top: 504, left: 726, right: 1424 }}
       />
-
-      {/* Camera, 614x349 at 797,1307. The file is a clean 2x of that. */}
-      <Prop
-        src={about.props.camera}
-        alt=""
-        width={614}
-        height={349}
-        top={352}
-        left={797}
-      />
-
-      {/*
-        REPLACED: the static "[vlog]" that sat at 1065,1675 in olive. It is
-        bracketed, which in this content module means copy still to supply, and
-        it occupies the only caption slot the camera has — so the carousel's
-        changing caption now uses it, in the same olive. about.props
-        .cameraCaption is still there if "[vlog]" turns out to be real copy that
-        belongs alongside rather than a placeholder for this.
-      */}
     </Band>
   )
 }

@@ -79,16 +79,28 @@ export const about = {
     'i am constantly seeking new experiences and open to connect :)',
   ],
   props: {
-    camera: '/props/camera.png',
-    cameraCaption: '[vlog]',
     musicNotes: '/props/about-decor.png', // the decorative element at 1057,999
     star: '/props/prop-small.png',        // pink, polka-dotted, 5-pointed
   },
 }
 
-// One floating image per slide, each with its own caption.
-// Static build renders index 0 only. M4 makes them float, M3-style advance comes later.
+/**
+ * One image per slide, each with its own caption, cycled by AboutCarousel.
+ *
+ * The camera is one of these rather than a frame the rest sit inside. It leads
+ * because it is what the Figma frame shows at rest — with its screen empty and
+ * "[vlog]" beneath it, which is simply this slide's caption. Everything here is
+ * a peer: same slot, same caption line, same place in the rotation.
+ *
+ * M4 makes them float; the advance itself is already live.
+ */
 export const aboutSlides: AboutSlide[] = [
+  {
+    image: '/props/camera.png',
+    // Decorative: the caption beneath carries the meaning, as for every slide.
+    alt: '',
+    caption: '[vlog]',
+  },
   {
     image: '/about/katara.png',
     alt: '[ALT TEXT]',
