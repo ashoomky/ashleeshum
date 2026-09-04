@@ -38,6 +38,17 @@ export type AboutSlide = { image: string; alt: string; caption: string }
 export const hero = {
   greeting: "hi! i'm",
   name: 'Ashlee Shum',
+  /**
+   * The name is drawn, not set. "A" is artwork (`props.monogram`), "S" is Demo
+   * Motherlane rotated -17deg, and only `first` and `last` are live text. Kept
+   * here rather than sliced out of `name` in the component, so the split is
+   * visible and editable where the rest of the copy lives.
+   */
+  nameParts: {
+    first: 'shlee', // follows the monogram
+    initial: 'S',
+    last: 'hum',
+  },
   tagline: 'ugc / marketing portfolio',
   socials: [
     { platform: 'instagram', href: '[INSTAGRAM URL]' },
