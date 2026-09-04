@@ -1,7 +1,11 @@
 // components/sections/Hero.tsx
 //
 // Figma node 2076:30, the first band: y0 to y956 on the 1511 canvas.
-// Every coordinate below is from figmaspec.md, not estimated.
+//
+// Coordinates come from figmaspec.md except for three, which the spec does not
+// record and which are therefore placed by eye off a screenshot of the frame:
+// the eleven stars, the flower and the clip. Each is marked at its use. Swap
+// them for measured values whenever those are to hand.
 //
 // The name is drawn rather than set. "A" is artwork, "S" is Demo Motherlane
 // turned -17deg, and only "shlee" and "hum" are live text. So the readable
@@ -98,6 +102,23 @@ export default function Hero() {
         priority
       />
 
+      {/*
+        The clip on the photostrip's top right corner. ALSO PLACED BY EYE, and
+        it has to come after the photostrip so it sits on top of it. Aimed at
+        70x55 at 1318,224, which straddles the strip's right edge (1358) as it
+        does in Figma. This file is mostly padding — 161x126 of artwork on a
+        328x328 canvas — so the box is roughly twice the visible clip.
+      */}
+      <Prop
+        src={hero.props.sticker}
+        alt=""
+        width={143}
+        height={143}
+        top={178}
+        left={1285}
+        priority
+      />
+
       {/* The monogram "A": 543x380 at 61,192. Artwork, not type. */}
       <Prop
         src={hero.props.monogram}
@@ -106,6 +127,24 @@ export default function Hero() {
         height={380}
         top={192}
         left={61}
+        priority
+      />
+
+      {/*
+        Flower, top left of the greeting. PLACED BY EYE off a screenshot of the
+        Figma frame — figmaspec lists the asset but records no coordinate for
+        it — so this is the one element here that is not measured. The visible
+        bloom is aimed at 145x100 at 81,122; the box is larger because the file
+        carries transparent padding (17 left, 49 top of 338x298), and Prop
+        places files, not their content. Replace with real numbers when handy.
+      */}
+      <Prop
+        src={hero.props.flower}
+        alt=""
+        width={164}
+        height={145}
+        top={98}
+        left={73}
         priority
       />
 
