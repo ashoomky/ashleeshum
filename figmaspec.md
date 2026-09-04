@@ -77,6 +77,9 @@ The rest of this band was re-measured from a later screenshot of the frame, and 
 - **Brand logos are 160 square**, at 978, 1154, 1330, still rotated 3°. Three at 160 will not fit from the old x1057 — they reach 1569, past the canvas.
 - **The credential row carries six marks, not four**: UOACS, GA4, HubSpot, UoA, then CapCut and DaVinci. Evenly spread at 257 apart from x12, in a 200×120 box.
 - Each row **sits on its band's centre line rather than a fixed y**, so it follows the tilt. Band one's centre falls ~38px between the middle of the canvas and the right of the brand row; band two's rises ~23px across the credential row. A single y leaves a row climbing out of its band.
+- The **"brands i've worked with" title is at 964.92,2386** — read off the frame, not estimated. Its box is 66 tall, so it runs to page 2452.
+- **The two band y values above are in doubt.** 2398 puts the upper band's top 12px under that title, and both are cream, so the title would be half-invisible on it — which is what happens when both numbers are used together. The title was measured directly, so the bands are the ones that have moved. Their real y is still needed.
+- The **"experience / tools" title has no measured position** either; it is placed by eye at x12, y430 in band coordinates.
 - The **star** sits over the phone's top left corner, ~134 wide at 508,2293. The spec previously recorded it as belonging to this band without a coordinate.
 - The **phone's screen is empty**, so the band behind shows through it.
 - **No relationship markers.** An earlier build put an asterisk on each non-paid brand with a footnote under the row; both were removed. `relationship` is still recorded per brand in `content/`, just not drawn.

@@ -88,16 +88,29 @@ export default function Credibility() {
       />
 
       {/*
-        PLACED BY EYE: the spec gives no position for either heading. Each sits
-        above the row it introduces.
+        Measured: 964.92,2386 in the frame, so 154 into the band.
+
+        CONFLICT, and it is the band below that is wrong rather than this. The
+        title's box is 66 tall, so it runs to y220, while figmaspec puts the
+        upper cream band's top at page 2398 — 12px under this title's top. A
+        cream title cannot sit on a cream band, so the two numbers cannot both
+        describe the current frame, and this one was read off it directly.
+        Everything else in this band turned out to be superseded too, so the
+        band's own y almost certainly moved with it. Needs the bands' real
+        coordinates before the composition here is right.
       */}
       <h2
         className="absolute font-signature text-script-sm text-cream"
-        style={{ top: 60, left: 966 }}
+        style={{ top: 154, left: 964.92 }}
       >
         {brandsHeading}
       </h2>
 
+      {/*
+        STILL PLACED BY EYE — the frame's coordinate for this one has not been
+        read off yet, unlike the title above. Left-aligned to its row's first
+        logo and sat above the band it introduces.
+      */}
       <h2
         className="absolute font-signature text-script-sm text-cream"
         style={{ top: 430, left: 12 }}
