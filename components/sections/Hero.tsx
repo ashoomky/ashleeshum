@@ -47,7 +47,21 @@ const STARS = [
 
 export default function Hero() {
   return (
-    <Band className="bg-thistle">
+    <Band
+      className="bg-thistle"
+      /*
+        The plum panel runs off the right of the canvas, so carry it on to the
+        right edge of the screen rather than stopping at the frame and leaving
+        thistle in the letterbox. Starts one pixel inside the frame's right
+        edge to cover the hairline its scaled, antialiased clip leaves behind.
+      */
+      bleed={
+        <div
+          className="absolute inset-y-0 right-0 bg-plum"
+          style={{ left: 'calc(50% + (1511px * var(--canvas-scale, 1)) / 2 - 1px)' }}
+        />
+      }
+    >
       <h1 className="sr-only">{hero.name}</h1>
 
       {/*
