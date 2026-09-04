@@ -43,10 +43,14 @@ export const hero = {
     { platform: 'youtube', href: 'https://youtube.com/@ashoomky' },
   ],
   props: {
+    // The "A" of "Ashlee" is artwork, not type — only "shlee" and "hum" are
+    // live text. 543x380 at 61,192.
+    monogram: '/props/monogram-a.png',
     flower: '/props/flower.png',          // same asset as the contact flower
     photostrip: '/props/photostrip.png',  // 4 vertical photos
     paperStrip: '/props/paper-strip.jpg', // click target -> TravelNotesPopup
     stars: '/props/star.svg',             // one star, repeated 11x across the panel
+    sticker: '/props/sticker-hero.png',   // rotate-sticker (122deg)
   },
 } as const
 
@@ -132,6 +136,17 @@ export const credentials: Credential[] = [
   { name: 'University of Auckland', logo: '/logos/uoa.png' },
 ]
 
+/**
+ * Editing software, kept apart from `credentials` deliberately: the design
+ * gives the credential row exactly four positions (x12, 245, 488, 713) and the
+ * four above fill them. These two are exported but have no home in the layout
+ * yet — decide where they go before rendering them.
+ */
+export const tools: Credential[] = [
+  { name: 'CapCut', logo: '/logos/capcut.png' },
+  { name: 'DaVinci Resolve', logo: '/logos/davinci.png' },
+]
+
 // ============================================================ pillars
 
 // NOT YET EXPORTED: the three `paper` notes below. Every other path here points
@@ -187,6 +202,10 @@ export const reelsByPillar = (p: Pillar) => reels.filter((r) => r.pillar === p)
 
 export const processHeading = 'how i work'
 
+// The winding line the four steps sit along — one SVG, not four separate
+// segments. 1020.6x1281 at 243.7,6428.5.
+export const processPath = '/props/process-path.svg'
+
 export const processSteps = [
   { n: 1, text: 'read through the brief' },
   { n: 2, text: 'come up with concept, story and hooks' },
@@ -210,6 +229,19 @@ export const contact = {
   email: 'ashoomky.business@gmail.com',
   phone: '+64 21 236 3800',
   props: { flower: '/props/flower.png' },
+}
+
+// ============================================================ decor
+
+/**
+ * Two loose decorative stars, distinct from the 34px `hero.props.stars` SVG
+ * that repeats across the plum panel. The spec pins no coordinates for either,
+ * so they are held here rather than assigned to a section on a guess — place
+ * them when the sections are built.
+ */
+export const decor = {
+  starPolka: '/props/prop-small.png',  // pink, polka-dotted, 5-pointed
+  starCream: '/props/prop-small-2.png', // cream and black, 8-pointed
 }
 
 // ============================================================ travel notes popup
