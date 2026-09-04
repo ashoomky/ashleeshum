@@ -1,0 +1,124 @@
+// tailwind.config.ts
+//
+// Every value here is measured from the Figma file
+// (A4pqjdqSX4RVHyE5TxCLl4, frame "landing page" 2076:30).
+// The file defines no Figma variables, so THIS FILE IS THE TOKEN SET.
+//
+// Rule: no arbitrary values in components. Never text-[35px] or bg-[#453643].
+// If something needs a value that isn't here, add it here first.
+
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './content/**/*.{ts,tsx}'],
+  theme: {
+    // Replaced, not extended — the design uses five colours and nothing else.
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      cream: '#f4f2e0',
+      plum: '#453643',
+      thistle: '#c9b1bd',
+      olive: '#79745c',
+      ink: '#0d1b1e',
+    },
+
+    fontFamily: {
+      signature: ['var(--font-bootzy)', 'cursive'], // Bootzy TM
+      display: ['var(--font-motherlane)', 'Georgia', 'serif'], // Demo Motherlane, initials only
+      heading: ['var(--font-alte-haas)', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+      label: ['var(--font-oskon)', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+      hand: ['var(--font-reenie)', 'cursive'], // Reenie Beanie, travel notes popup
+      body: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'], // never self-hosted
+    },
+
+    /**
+     * Named for the role, not the pixel size, so components read like the design.
+     * Each entry carries its own line-height and letter-spacing, so one class
+     * sets all three. Tracking is absolute px, as in Figma.
+     */
+    fontSize: {
+      // hero
+      'hero-greeting': ['50px', { lineHeight: 'normal', letterSpacing: '1px' }],
+      'hero-name': ['240px', { lineHeight: 'normal', letterSpacing: '4.8px' }],
+      'hero-name-lg': ['250px', { lineHeight: 'normal', letterSpacing: '5px' }],
+      'hero-initial': ['370px', { lineHeight: 'normal', letterSpacing: '7.4px' }],
+      tagline: ['25px', { lineHeight: 'normal', letterSpacing: '0.75px' }],
+
+      // section headings
+      'script-lg': ['120px', { lineHeight: 'normal', letterSpacing: '3.6px' }], // "about me."
+      'script-sm': ['60px', { lineHeight: 'normal', letterSpacing: '1.8px' }], // "brands i've worked with"
+      'testimonial-head': ['45px', { lineHeight: 'normal', letterSpacing: '1.35px' }],
+
+      // pillars
+      'pillar-initial': ['300px', { lineHeight: 'normal', letterSpacing: '9px' }],
+      'pillar-word': ['80px', { lineHeight: 'normal', letterSpacing: '2.4px' }],
+
+      // stats
+      stat: ['130px', { lineHeight: 'normal', letterSpacing: '3.9px' }],
+      // 1.57M is tracked wider than the other two
+      'stat-wide': ['130px', { lineHeight: 'normal', letterSpacing: '5.2px' }],
+
+      // process + contact
+      'process-heading': ['90px', { lineHeight: 'normal', letterSpacing: '-3.6px' }],
+      'process-step': ['40px', { lineHeight: 'normal', letterSpacing: '1.2px' }],
+      'contact-heading': ['200px', { lineHeight: '0.78165', letterSpacing: '8px' }],
+
+      // body scale
+      'body-lg': ['35px', { lineHeight: 'normal', letterSpacing: '1.05px' }],
+      body: ['30px', { lineHeight: 'normal', letterSpacing: '0.9px' }],
+      'body-sm': ['25px', { lineHeight: 'normal', letterSpacing: '0.75px' }],
+      caption: ['20px', { lineHeight: 'normal', letterSpacing: '0.6px' }],
+    },
+
+    extend: {
+      maxWidth: {
+        // Design width. Not 1440.
+        canvas: '1511px',
+      },
+
+      width: {
+        canvas: '1511px',
+        'hero-panel': '370px', // plum panel, hero right
+        'contact-olive': '206px',
+        'contact-cream': '144px',
+        phone: '309px', // pillar phone frame
+        'phone-lg': '375px', // credibility phone mockup
+        'text-col': '564px', // about body column
+        chip: '345px', // tagline pill
+      },
+
+      height: {
+        band: '956px', // every section except the two below
+        'band-stats': '321px',
+        'band-process': '1912px',
+        phone: '549px',
+        'phone-lg': '666px',
+        chip: '40px',
+      },
+
+      spacing: {
+        gutter: '120px', // about body column left edge
+        'pillar-gap': '309px', // phone frames sit edge to edge
+      },
+
+      borderRadius: {
+        chip: '21px',
+      },
+
+      rotate: {
+        // exact rotations used in the design
+        'initial-s': '-17deg',
+        photostrip: '9deg',
+        band: '3deg',
+        'band-alt': '-1deg',
+        prop: '-9deg',
+        'prop-alt': '-15deg',
+        sticker: '122deg',
+      },
+    },
+  },
+  plugins: [],
+}
+
+export default config
