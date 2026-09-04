@@ -15,6 +15,28 @@
 // The frame keeps its own overflow-hidden so elements that run past the canvas
 // edge — the plum panel reaches x1563 — still clip at 1511 exactly as they do
 // in Figma, rather than spilling into the letterbox.
+//
+// READ THIS FIRST — what this component does and does not solve for mobile:
+//
+// The layout script clamps --canvas-scale at a floor (MIN in app/layout.tsx)
+// rather than letting it shrink without limit. Below the viewport size that
+// floor implies, the outer section switches from centering the band to
+// scrolling it — see the min-h-full wrapper below — so a phone gets a pannable
+// window onto the full-size design rather than the design shrunk past the
+// point of being readable or tappable.
+//
+// That is a floor against outright illegibility. It is NOT a mobile layout.
+// Nothing here reflows content, stacks columns, or changes what a section
+// shows on a small screen — every section still renders its full desktop
+// composition, just panned instead of shrunk once it is too small to fit.
+// There is no mobile Figma frame to build a real mobile layout from (checked:
+// figmaspec.md documents one frame, "landing page," and nothing else), and
+// inventing one — spacing, stacking order, what to hide — is a design call,
+// not something to guess at from the desktop frame. When mobile designs exist,
+// each section is the place a mobile variant belongs (e.g. a `md:hidden` /
+// `hidden md:block` pair of layouts, or a breakpoint inside the section), not
+// this component — Band's job stays "fit or pan the given band," the same for
+// every section regardless of what that section does on a small screen.
 
 type BandProps = {
   children: React.ReactNode
@@ -62,17 +84,30 @@ type BandProps = {
 
 export default function Band({ children, className, bleed, bleedOver }: BandProps) {
   return (
+    // overflow-auto rather than hidden: once --canvas-scale is pinned at its
+    // floor, the band no longer fits the viewport on purpose, and this is what
+    // makes it pannable instead of clipped.
     <section
-      className={['relative flex h-dvh w-full items-center justify-center overflow-hidden', className]
-        .filter(Boolean)
-        .join(' ')}
+      className={['relative h-dvh w-full overflow-auto', className].filter(Boolean).join(' ')}
     >
       {bleed}
-      <div
-        className="relative h-band w-canvas shrink-0 overflow-hidden"
-        style={{ scale: 'var(--canvas-scale, 1)' }}
-      >
-        {children}
+      {/*
+        min-h-full rather than h-full: centering a box via flex align/justify
+        center silently clips whatever overflows on the leading edge — a
+        well-known flexbox gap, not this app's bug — because the container
+        stays exactly viewport-sized and the centered box is pinned to a
+        midpoint outside the scrollable area. min-h-full lets this wrapper grow
+        to fit an oversized child instead, so overflow-auto above has a
+        properly sized scrolling region and every edge of the band stays
+        reachable.
+      */}
+      <div className="flex min-h-full w-full items-center justify-center">
+        <div
+          className="relative h-band w-canvas shrink-0 overflow-hidden"
+          style={{ scale: 'var(--canvas-scale, 1)' }}
+        >
+          {children}
+        </div>
       </div>
       {bleedOver}
     </section>
