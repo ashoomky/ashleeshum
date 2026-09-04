@@ -15,40 +15,36 @@ can reuse them; keep `components/` and `components/sections/` route-agnostic
 it's rendered on. This already held before this note was added; the
 instruction is to keep holding it, not to restructure anything now.
 
-**Mobile.** This is the part that needed an actual fix, not just a rule.
-Every section is built at the Figma frame's exact 1511x956 and scaled by
-`components/Band.tsx` to fit the viewport — `min(vw/1511, vh/956)`. Left
-alone, that scale falls to ~0.25 on a real phone (iPhone 14: 390x844), which
-puts the About body copy at 9px and the carousel's arrow buttons at 11px:
-present on screen, unreadable, untappable. Band now floors the scale at 0.5
-(`MIN` in `app/layout.tsx`) and switches from fitting the band to letting it
-scroll once the floor is hit, so a phone gets a pannable window onto the full
-design instead of the design shrunk past use. Verified: at 375x667 and
-390x844 the section's `scrollHeight`/`scrollWidth` exceed its `clientHeight`/
-`clientWidth` and every edge of the band is reachable by scrolling, with no
-change at desktop sizes (scale never touches the floor there).
+**The page is one scroll. Never let a section scroll inside itself.** Every
+section is a `Band`, built at the Figma frame's exact 1511x956 and scaled to
+fit the viewport with `min(vw/1511, vh/956)`. A section that becomes its own
+scroll container captures the wheel, so the page stops moving until that
+section has scrolled to its own end. This has already been shipped and
+reverted once, and it is easy to reintroduce by accident, because CSS `scale`
+is a transform and **transforms do not change layout size** — the frame is
+laid out at its full 1511x956 however far it is scaled down, so sizing
+anything by the frame's own box leaves 956px of layout inside a section only
+as tall as the viewport. That phantom overflow is invisible until something
+reacts to it, and then it becomes a nested scrollbar and breaks absolutely
+positioned bleeds in two. `Band` avoids it by sizing its wrapper to the
+frame's *visual* size (`calc(956px * var(--canvas-scale))`) and taking the
+frame itself out of flow. Keep that property. If you change `Band`, check
+`scrollHeight === clientHeight` on every section at a viewport shorter than
+956px — a laptop, e.g. 1440x780 — since taller windows hide the bug.
 
-**That floor is a stopgap, not a mobile design, and every future section
-should be built knowing that.** It stops the worst failure — illegible text,
-dead buttons — without inventing a mobile layout, because there is no mobile
-Figma frame to build one from (checked: `figmaspec.md` documents exactly one
-frame, "landing page"). It does not reflow anything, stack columns, hide
-what doesn't fit, or make touch targets meet 24x24 CSS px on a phone (0.5
-scale gets a 44px arrow to 22px — still under that). A section that is fine
-panned at 0.5 needs nothing further. A section where panning is genuinely
-bad — something meant to be read start to finish on a phone, a control that
-has to be tappable there — needs an explicit mobile variant inside that
-section (a breakpoint, an `md:hidden`/`hidden md:block` pair), decided
-per-section against real content, not solved once here. Silently shipping a
-new section that only works panned-at-0.5 when it clearly needed better is
-exactly the gap this note exists to close — check new sections at a real
-phone width (390x844 is a reasonable stand-in) before calling them done, the
-same way this codebase already checks new work against measured Figma values
-rather than assuming it looks right.
-
-When real mobile Figma frames exist, this note's "no frame to build from"
-premise is gone and that changes the calculus — worth reopening then, not
-just leaving this floor in place forever.
+**Mobile is a known, open problem — don't paper over it here.** Because a
+band always fits the viewport, a phone scales the design right down: 0.258 at
+390px wide, which puts the About body copy at 9px and the carousel arrows at
+11px. Unreadable and untappable, and not fixable by making the band bigger
+than the screen — that is exactly the nested-scroll trap above, and below the
+viewport width it also adds a horizontal scrollbar. The real fix is a mobile
+layout, and there is no mobile Figma frame to build one from (checked:
+`figmaspec.md` documents exactly one frame, "landing page"). When mobile
+designs exist, the variant belongs inside each section — a breakpoint, or an
+`md:hidden`/`hidden md:block` pair — decided per-section against real
+content, not solved once in `Band`. Until then, check new sections at a real
+phone width (390x844) before calling them done, and say plainly that mobile
+is unhandled rather than implying otherwise.
 
 # Motion references — not implemented yet
 

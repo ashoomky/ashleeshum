@@ -37,16 +37,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           and scaled to fit the viewport, so this is layout rather than
           decoration and cannot wait for hydration. See components/Band.
 
-          MIN=0.5 is a floor on how far a band will shrink, below which Band
-          switches from fitting the screen to scrolling instead. Without it,
-          this scales all the way down on a phone — on a 390px-wide viewport,
-          scale would be 0.258, which sets the About paragraphs (35px in the
-          design) to 9px and the carousel's 44px arrows to 11px: unreadable,
-          untappable. 0.5 is a provisional, easy-to-tune placeholder, not a
-          design decision — see the READ THIS FIRST note in components/Band.
+          This deliberately has NO lower bound. A floor was tried and reverted:
+          it makes a band larger than the viewport by design, which can only
+          be reached by scrolling it, and a band that scrolls inside itself is
+          a nested scroll container — it captures the wheel and stops the page
+          being one continuous scroll. Below the floor it would also be wider
+          than the screen, adding a horizontal scrollbar on every phone. The
+          cost of leaving it out is that a phone scales the band right down
+          (0.258 at 390px wide, putting 35px body copy at 9px), which is a
+          real problem but a mobile-layout one — see CLAUDE.md.
         */}
         <Script id="canvas-scale" strategy="beforeInteractive">
-          {`(function(){var d=document.documentElement;var MIN=0.5;function s(){d.style.setProperty("--canvas-scale",String(Math.max(MIN,Math.min(innerWidth/1511,innerHeight/956))))}s();addEventListener("resize",s,{passive:true})})()`}
+          {`(function(){var d=document.documentElement;function s(){d.style.setProperty("--canvas-scale",String(Math.min(innerWidth/1511,innerHeight/956)))}s();addEventListener("resize",s,{passive:true})})()`}
         </Script>
         {children}
       </body>

@@ -16,27 +16,26 @@
 // edge — the plum panel reaches x1563 — still clip at 1511 exactly as they do
 // in Figma, rather than spilling into the letterbox.
 //
-// READ THIS FIRST — what this component does and does not solve for mobile:
+// READ THIS FIRST — the one rule this component has to keep:
 //
-// The layout script clamps --canvas-scale at a floor (MIN in app/layout.tsx)
-// rather than letting it shrink without limit. Below the viewport size that
-// floor implies, the outer section switches from centering the band to
-// scrolling it — see the min-h-full wrapper below — so a phone gets a pannable
-// window onto the full-size design rather than the design shrunk past the
-// point of being readable or tappable.
+// A band must never scroll inside itself. The page is a stack of these and it
+// has to read as one continuous scroll, so a section that is its own scroll
+// container captures the wheel and stops the page moving until it has scrolled
+// to its own end. That is not a hypothetical: it shipped, from an attempt to
+// give small screens a pannable window onto the full-size design by clamping
+// --canvas-scale at a floor. It made the hero feel stuck and split the plum
+// bleed in two. Both are the same fault, and the fix is the sized box below.
 //
-// That is a floor against outright illegibility. It is NOT a mobile layout.
-// Nothing here reflows content, stacks columns, or changes what a section
-// shows on a small screen — every section still renders its full desktop
-// composition, just panned instead of shrunk once it is too small to fit.
-// There is no mobile Figma frame to build a real mobile layout from (checked:
-// figmaspec.md documents one frame, "landing page," and nothing else), and
-// inventing one — spacing, stacking order, what to hide — is a design call,
-// not something to guess at from the desktop frame. When mobile designs exist,
-// each section is the place a mobile variant belongs (e.g. a `md:hidden` /
-// `hidden md:block` pair of layouts, or a breakpoint inside the section), not
-// this component — Band's job stays "fit or pan the given band," the same for
-// every section regardless of what that section does on a small screen.
+// The corollary is that a band always fits the viewport, which is why the
+// scale has no lower bound and why a phone scales the design right down rather
+// than panning it. That is a real problem — 35px body copy lands at 9px on a
+// 390px screen — but it is a mobile-layout problem, not one this component can
+// solve by making the band bigger than the screen. Nothing here reflows,
+// stacks or hides anything, and there is no mobile Figma frame to build a real
+// layout from (checked: figmaspec.md documents one frame, "landing page").
+// When mobile designs exist, the variant belongs inside each section — a
+// breakpoint, or an `md:hidden` / `hidden md:block` pair — not here. Band's
+// job stays "fit the given band to the viewport," the same for every section.
 
 type BandProps = {
   children: React.ReactNode
@@ -84,26 +83,39 @@ type BandProps = {
 
 export default function Band({ children, className, bleed, bleedOver }: BandProps) {
   return (
-    // overflow-auto rather than hidden: once --canvas-scale is pinned at its
-    // floor, the band no longer fits the viewport on purpose, and this is what
-    // makes it pannable instead of clipped.
     <section
-      className={['relative h-dvh w-full overflow-auto', className].filter(Boolean).join(' ')}
+      className={['relative flex min-h-dvh w-full items-center justify-center overflow-hidden', className]
+        .filter(Boolean)
+        .join(' ')}
     >
       {bleed}
       {/*
-        min-h-full rather than h-full: centering a box via flex align/justify
-        center silently clips whatever overflows on the leading edge — a
-        well-known flexbox gap, not this app's bug — because the container
-        stays exactly viewport-sized and the centered box is pinned to a
-        midpoint outside the scrollable area. min-h-full lets this wrapper grow
-        to fit an oversized child instead, so overflow-auto above has a
-        properly sized scrolling region and every edge of the band stays
-        reachable.
+        THE SIZED BOX. This is the load-bearing part, so: CSS `scale` is a
+        transform, and transforms do not change layout size. The frame below
+        is laid out at its full 1511x956 no matter how far it is scaled down,
+        so sizing this wrapper by the frame's own box would leave 956px of
+        layout inside a section that is only as tall as the viewport — phantom
+        overflow on any screen shorter than 956, which is every laptop.
+        That overflow is invisible until something reacts to it, and then it
+        turns a section into a nested scroll container: the wheel scrolls the
+        section to its end before the page moves at all, and an absolutely
+        positioned bleed stops at the padding box while the content carries on
+        past it, breaking in two.
+
+        So this wrapper is sized to what the frame actually *looks* like —
+        the design box times the scale — and the frame is taken out of flow
+        inside it and pinned to the top left, so the visual and the layout
+        agree. No phantom overflow, no nested scrolling, one page scroll.
       */}
-      <div className="flex min-h-full w-full items-center justify-center">
+      <div
+        className="relative shrink-0"
+        style={{
+          width: 'calc(1511px * var(--canvas-scale, 1))',
+          height: 'calc(956px * var(--canvas-scale, 1))',
+        }}
+      >
         <div
-          className="relative h-band w-canvas shrink-0 overflow-hidden"
+          className="absolute top-0 left-0 h-band w-canvas origin-top-left overflow-hidden"
           style={{ scale: 'var(--canvas-scale, 1)' }}
         >
           {children}
