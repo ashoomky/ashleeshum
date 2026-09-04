@@ -88,32 +88,40 @@ export default function Credibility() {
       />
 
       {/*
-        Measured: 964.92,2386 in the frame, so 154 into the band.
+        Turned with the band so it sits parallel just above it, rather than
+        cutting across it. The band drops 27px over this title's width, so an
+        unrotated title cannot clear it evenly — level with the band at one end
+        it is buried at the other, which is what the measured 964.92,2386 gave.
 
-        CONFLICT, and it is the band below that is wrong rather than this. The
-        title's box is 66 tall, so it runs to y220, while figmaspec puts the
-        upper cream band's top at page 2398 — 12px under this title's top. A
-        cream title cannot sit on a cream band, so the two numbers cannot both
-        describe the current frame, and this one was read off it directly.
-        Everything else in this band turned out to be superseded too, so the
-        band's own y almost certainly moved with it. Needs the bands' real
-        coordinates before the composition here is right.
+        Rotated about its BOTTOM LEFT corner, which is the thing that makes
+        this hold: the corner is pinned 10px above the band's top edge where
+        the title starts, and turning about that point swings the rest of the
+        title along the band's own line, so the gap stays 10px the whole way
+        across. Positioned by `bottom` rather than `top` so it does not depend
+        on how tall the type happens to render.
+
+        x is the measured 964.92. The y is not the measured 2386: at that y the
+        title overlaps the band, and both are cream. One of the two is stale,
+        and the title was read off the frame directly, so the band's y is the
+        suspect — see figmaspec.
       */}
       <h2
-        className="absolute font-signature text-script-sm text-cream"
-        style={{ top: 154, left: 964.92 }}
+        className="absolute origin-bottom-left rotate-band font-signature text-script-sm text-cream"
+        style={{ bottom: 789, left: 964.92 }}
       >
         {brandsHeading}
       </h2>
 
       {/*
-        STILL PLACED BY EYE — the frame's coordinate for this one has not been
-        read off yet, unlike the title above. Left-aligned to its row's first
-        logo and sat above the band it introduces.
+        STILL PLACED BY EYE — no coordinate has been read off the frame for
+        this one. Left-aligned to its row's first logo, and sat 10px above the
+        lower band's top edge, which is at y532 out at x12. Left level rather
+        than turned: that band is tilted only -1deg, and nothing was asked of
+        this title beyond dropping it onto the band.
       */}
       <h2
         className="absolute font-signature text-script-sm text-cream"
-        style={{ top: 430, left: 12 }}
+        style={{ bottom: 434, left: 12 }}
       >
         {experienceHeading}
       </h2>
