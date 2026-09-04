@@ -37,7 +37,7 @@ import localFont from 'next/font/local'
 /**
  * Bootzy TM — the script voice.
  * "hi! i'm" (50) · "about me." (120) · stat numbers (130) · section scripts
- * "brands i've worked with" / "credentials / experience" (60) · testimonial
+ * "brands i've worked with" / "experience / tools" (60) · testimonial
  * header (45) · "let's work together!!" (200).
  *
  * woff2 with woff as fallback. The supplied .eot is IE-only, not shipped.

@@ -27,7 +27,9 @@ export type Reel = {
 export type Relationship = 'paid' | 'gifted' | 'concept'
 
 export type Brand = { name: string; logo: string; relationship: Relationship }
-export type Credential = { name: string; logo: string }
+
+/** A name/logo pair — used for both `experience` and `tools`. */
+export type LogoItem = { name: string; logo: string }
 
 export type AboutSlide = { image: string; alt: string; caption: string }
 
@@ -69,6 +71,7 @@ export const about = {
     camera: '/props/camera.png',
     cameraCaption: '[vlog]',
     musicNotes: '/props/about-decor.png', // the decorative element at 1057,999
+    star: '/props/prop-small.png',        // pink, polka-dotted, 5-pointed
   },
 }
 
@@ -118,7 +121,10 @@ export const stats = [
 // ============================================================ credibility
 
 export const brandsHeading = "brands i've worked with"
-export const credentialsHeading = 'credentials / experience'
+
+// Figma renders this title as "credentials / experience". The section now
+// carries experience and tools, so the title follows the content.
+export const experienceHeading = 'experience / tools'
 
 export const RELATIONSHIP_FOOTNOTE =
   'Gifted or collaborative partnership. Unmarked pieces are self-directed concepts.'
@@ -129,23 +135,24 @@ export const brands: Brand[] = [
   { name: 'dailybean', logo: '/logos/dailybean.png', relationship: 'gifted' },
 ]
 
-export const credentials: Credential[] = [
+// Study and certification. Four logos, on the 2800-2811 line at x12, 245, 488, 713.
+export const experience: LogoItem[] = [
   { name: 'UOACS', logo: '/logos/uoacs.png' },
   { name: 'Google Analytics 4', logo: '/logos/ga4.png' },
   { name: 'HubSpot', logo: '/logos/hubspot.png' },
   { name: 'University of Auckland', logo: '/logos/uoa.png' },
 ]
 
-/**
- * Editing software, kept apart from `credentials` deliberately: the design
- * gives the credential row exactly four positions (x12, 245, 488, 713) and the
- * four above fill them. These two are exported but have no home in the layout
- * yet — decide where they go before rendering them.
- */
-export const tools: Credential[] = [
+// Editing software, shown alongside `experience` in the same section.
+export const tools: LogoItem[] = [
   { name: 'CapCut', logo: '/logos/capcut.png' },
   { name: 'DaVinci Resolve', logo: '/logos/davinci.png' },
 ]
+
+// The star that sits in this section.
+export const credibilityProps = {
+  star: '/props/prop-small-2.png', // cream and black, 8-pointed
+}
 
 // ============================================================ pillars
 
@@ -229,19 +236,6 @@ export const contact = {
   email: 'ashoomky.business@gmail.com',
   phone: '+64 21 236 3800',
   props: { flower: '/props/flower.png' },
-}
-
-// ============================================================ decor
-
-/**
- * Two loose decorative stars, distinct from the 34px `hero.props.stars` SVG
- * that repeats across the plum panel. The spec pins no coordinates for either,
- * so they are held here rather than assigned to a section on a guess — place
- * them when the sections are built.
- */
-export const decor = {
-  starPolka: '/props/prop-small.png',  // pink, polka-dotted, 5-pointed
-  starCream: '/props/prop-small-2.png', // cream and black, 8-pointed
 }
 
 // ============================================================ travel notes popup
