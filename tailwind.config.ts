@@ -102,6 +102,20 @@ const config: Config = {
         'pillar-gap': '309px', // phone frames sit edge to edge
       },
 
+      /**
+       * The screen window cut into props/phone-frame.png, as a percentage of
+       * the frame box. Measured off the asset itself: the transparent screen
+       * sits at 91 / 89 / 49 / 48px inside a 750x1332 image. Percentages, not
+       * px, so one set of values serves both PhoneFrame sizes — the art and
+       * both boxes share an aspect ratio of 0.563.
+       */
+      inset: {
+        'screen-l': '12.133%',
+        'screen-r': '11.867%',
+        'screen-t': '3.679%',
+        'screen-b': '3.604%',
+      },
+
       borderRadius: {
         chip: '21px',
       },
