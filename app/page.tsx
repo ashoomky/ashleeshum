@@ -1,7 +1,13 @@
-// TEMPORARY page — the hero band while the rest of the sections are built.
+// TEMPORARY page — the sections built so far.
 
 import Hero from '@/components/sections/Hero'
+import AboutMe from '@/components/sections/AboutMe'
 
 export default function Home() {
-  return <Hero />
+  return (
+    <>
+      <Hero />
+      <AboutMe />
+    </>
+  )
 }
