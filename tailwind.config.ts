@@ -4,8 +4,12 @@
 // (A4pqjdqSX4RVHyE5TxCLl4, frame "landing page" 2076:30).
 // The file defines no Figma variables, so THIS FILE IS THE TOKEN SET.
 //
-// Rule: no arbitrary values in components. Never text-[35px] or bg-[#453643].
-// If something needs a value that isn't here, add it here first.
+// Rule: no arbitrary values in components — no text- or bg- class with square
+// brackets round a raw px size or hex colour. If something needs a value that
+// isn't here, add it here first.
+//
+// (Written without the literal bracket syntax on purpose: Tailwind v4 scans this
+// file too, and an example spelled out in full gets compiled into a real utility.)
 
 import type { Config } from 'tailwindcss'
 

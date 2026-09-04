@@ -32,9 +32,11 @@ tailwind.config.ts   the token set
 from Figma (frame `landing page`, `2076:30`) rather than estimated. The design
 defines no Figma variables, so `tailwind.config.ts` *is* the token set.
 
-**No arbitrary values in components.** Never `text-[35px]` or `bg-[#453643]`.
-If something needs a value that isn't in the config, add it there first, with a
-note on where the number came from.
+**No arbitrary values in components.** No `text-` or `bg-` class with square
+brackets round a raw px size or hex colour. If something needs a value that isn't
+in the config, add it there first, with a note on where the number came from.
+Spell such examples out in full nowhere in the repo — Tailwind v4 scans Markdown
+and config files too, and compiles any it finds into real utilities.
 
 **Copy and asset paths live in `content/`.** Components read from there and never
 hardcode either. `[BRACKETS]` mark content still to supply.
