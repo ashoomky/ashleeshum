@@ -16,6 +16,7 @@
 //
 // Static. The paper strip is the popup trigger but the click is not wired yet.
 
+import Band from '@/components/Band'
 import Prop from '@/components/Prop'
 import Chip from '@/components/Chip'
 import { hero } from '@/content'
@@ -42,7 +43,7 @@ const STARS = [
 
 export default function Hero() {
   return (
-    <section className="relative h-band w-canvas overflow-hidden bg-thistle">
+    <Band className="bg-thistle">
       <h1 className="sr-only">{hero.name}</h1>
 
       {/*
@@ -147,6 +148,6 @@ export default function Hero() {
         three hrefs in content are still placeholders, so there is nothing
         honest to render here.
       */}
-    </section>
+    </Band>
   )
 }
