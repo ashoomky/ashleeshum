@@ -3,6 +3,7 @@
 import Hero from '@/components/sections/Hero'
 import AboutMe from '@/components/sections/AboutMe'
 import Stats from '@/components/sections/Stats'
+import Credibility from '@/components/sections/Credibility'
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Hero />
       <AboutMe />
       <Stats />
+      <Credibility />
     </>
   )
 }

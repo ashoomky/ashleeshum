@@ -172,6 +172,14 @@ export const tools: LogoItem[] = [
   { name: 'DaVinci Resolve', logo: '/logos/davinci.png' },
 ]
 
+/**
+ * The caption by the phone mockup. figmaspec records neither a position nor a
+ * size for it — it is not in the spec at all — so it is placed by eye in
+ * Credibility and the copy is kept here with everything else rather than
+ * inline in the section.
+ */
+export const credibilityCaption = 'marketing director'
+
 // The star that sits in this section.
 export const credibilityProps = {
   star: '/props/prop-small-2.png', // cream and black, 8-pointed
