@@ -79,14 +79,40 @@ type BandProps = {
    * the artwork, so anything further in would cover the design.
    */
   bleedOver?: React.ReactNode
+  /**
+   * The band's height in the design. Most are 956, which is the default;
+   * Stats is 321 and How I Work is 1912, a double band.
+   *
+   * A band shorter than 956 is a strip that sits inline between full bands,
+   * so it takes exactly its own scaled height. Anything 956 or taller keeps
+   * filling the screen when the scale leaves it short of the viewport, which
+   * is what letterboxes a full band on a narrow window — and a double band is
+   * taller than the viewport anyway, so the same rule covers it.
+   */
+  height?: number
 }
 
-export default function Band({ children, className, bleed, bleedOver }: BandProps) {
+/** The design's standard band. Above this a band fills the screen, below it a
+ *  band is a strip and takes its own height. */
+const FULL_BAND = 956
+
+export default function Band({
+  children,
+  className,
+  bleed,
+  bleedOver,
+  height = FULL_BAND,
+}: BandProps) {
+  const scaledHeight = `calc(${height}px * var(--canvas-scale, 1))`
+
   return (
     <section
-      className={['relative flex min-h-dvh w-full items-center justify-center overflow-hidden', className]
+      className={['relative flex w-full items-center justify-center overflow-hidden', className]
         .filter(Boolean)
         .join(' ')}
+      style={{
+        minHeight: height >= FULL_BAND ? `max(100dvh, ${scaledHeight})` : scaledHeight,
+      }}
     >
       {bleed}
       {/*
@@ -109,14 +135,11 @@ export default function Band({ children, className, bleed, bleedOver }: BandProp
       */}
       <div
         className="relative shrink-0"
-        style={{
-          width: 'calc(1511px * var(--canvas-scale, 1))',
-          height: 'calc(956px * var(--canvas-scale, 1))',
-        }}
+        style={{ width: 'calc(1511px * var(--canvas-scale, 1))', height: scaledHeight }}
       >
         <div
-          className="absolute top-0 left-0 h-band w-canvas origin-top-left overflow-hidden"
-          style={{ scale: 'var(--canvas-scale, 1)' }}
+          className="absolute top-0 left-0 w-canvas origin-top-left overflow-hidden"
+          style={{ height, scale: 'var(--canvas-scale, 1)' }}
         >
           {children}
         </div>
