@@ -18,18 +18,18 @@ type PillarHeadingProps = {
   heading: string
   top: number
   left: number
-  /** Caps the line so a long title wraps where the layout wants it to. */
-  width?: number
 }
 
-export default function PillarHeading({ heading, top, left, width }: PillarHeadingProps) {
+export default function PillarHeading({ heading, top, left }: PillarHeadingProps) {
   const initial = heading.slice(0, 1)
   const rest = heading.slice(1)
 
   return (
     <h2
-      className="absolute font-heading text-pillar-word text-plum"
-      style={{ top, left, width }}
+      // nowrap: the title is one line in the design. Left to wrap it breaks
+      // after the initial and the second line lands across the phones.
+      className="absolute whitespace-nowrap font-heading text-pillar-word text-plum"
+      style={{ top, left }}
     >
       <span className="font-display text-pillar-initial">{initial}</span>
       {rest}
