@@ -39,6 +39,8 @@ type PillarLayout = {
   props: PropSpot[]
   heading: { top: number; left: number; width?: number }
   note: { top: number; left: number; width: number }
+  /** Nudge to centre this band's content on screen; see Band. */
+  offsetY: number
 }
 
 const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
@@ -55,6 +57,7 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
     ],
     heading: { top: 78, left: 115, width: 900 },
     note: { top: 180, left: 1080, width: 400 },
+    offsetY: 33,
   },
 
   travel: {
@@ -70,6 +73,7 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
     props: [{ top: 71, left: 529, width: 375, height: 375 }],
     heading: { top: 78, left: 173, width: 900 },
     note: { top: 250, left: 860, width: 500 },
+    offsetY: 36,
   },
 
   food: {
@@ -82,6 +86,7 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
     props: [{ top: 614, left: 151, width: 277, height: 159 }],
     heading: { top: 78, left: 12, width: 900 },
     note: { top: 330, left: 12, width: 380 },
+    offsetY: 43,
   },
 }
 
@@ -89,7 +94,7 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
   const layout = LAYOUTS[pillar.id]
 
   return (
-    <Band className="bg-cream">
+    <Band className="bg-cream" offsetY={layout.offsetY}>
       {layout.props.map((spot, i) => (
         <Prop
           key={pillar.props[i]}

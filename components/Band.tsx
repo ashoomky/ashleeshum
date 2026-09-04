@@ -90,6 +90,23 @@ type BandProps = {
    * taller than the viewport anyway, so the same rule covers it.
    */
   height?: number
+  /**
+   * Shifts everything in the band down by this many design px, to sit the
+   * content in the middle of the screen.
+   *
+   * The canvas already fills the viewport, so there is no letterbox left to
+   * redistribute — a band whose content sits high in its own 956 has to move
+   * the content, not the canvas. The frames were laid out against the design's
+   * full page, where each band's content had the band above and below it for
+   * company; on their own, one to a screen, several of them sit noticeably
+   * high. Measured per band as half the difference between the space above the
+   * content and the space below it.
+   *
+   * Applied inside the frame, so it is plain design px and needs no scaling.
+   * `bleed` sits outside and is NOT moved by this — a band using both has to
+   * offset its bleed itself, or the two come apart.
+   */
+  offsetY?: number
 }
 
 /** The design's standard band. Above this a band fills the screen, below it a
@@ -102,6 +119,7 @@ export default function Band({
   bleed,
   bleedOver,
   height = FULL_BAND,
+  offsetY = 0,
 }: BandProps) {
   const scaledHeight = `calc(${height}px * var(--canvas-scale, 1))`
 
@@ -141,7 +159,13 @@ export default function Band({
           className="absolute top-0 left-0 w-canvas origin-top-left overflow-hidden"
           style={{ height, scale: 'var(--canvas-scale, 1)' }}
         >
-          {children}
+          {/* Inside the frame, so the offset is design px and scales with it. */}
+          <div
+            className="absolute inset-0"
+            style={offsetY ? { transform: `translateY(${offsetY}px)` } : undefined}
+          >
+            {children}
+          </div>
         </div>
       </div>
       {bleedOver}

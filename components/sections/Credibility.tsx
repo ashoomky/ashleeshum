@@ -29,6 +29,14 @@ import {
 const CANVAS_MID_Y = 478
 
 /**
+ * How far the band's content is nudged down to centre it on screen. The
+ * ribbons are bleeds, drawn outside the frame, so Band's own offsetY does not
+ * reach them — they add it here instead, or they come away from the logo rows
+ * that ride them.
+ */
+const OFFSET_Y = 55
+
+/**
  * The cream ribbons, drawn as bleed so they reach both edges of the screen.
  *
  * They cannot live in the frame: the frame clips at the canvas, so a ribbon
@@ -46,7 +54,7 @@ function Ribbon({ top, className }: { top: number; className: string }) {
     <div
       className={['absolute bg-cream', className].join(' ')}
       style={{
-        top: `calc(50% + ${top - CANVAS_MID_Y}px * var(--canvas-scale, 1))`,
+        top: `calc(50% + ${top + OFFSET_Y - CANVAS_MID_Y}px * var(--canvas-scale, 1))`,
         height: 'calc(173.56px * var(--canvas-scale, 1))',
         left: '-10%',
         width: '120%',
@@ -59,6 +67,7 @@ export default function Credibility() {
   return (
     <Band
       className="bg-olive"
+      offsetY={OFFSET_Y}
       bleed={
         <>
           <Ribbon top={166} className="rotate-band" />

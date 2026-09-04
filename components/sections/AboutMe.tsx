@@ -19,7 +19,7 @@ const PARAGRAPH_TOPS = [306, 441, 621]
 
 export default function AboutMe() {
   return (
-    <Band className="bg-cream">
+    <Band className="bg-cream" offsetY={81}>
       {/*
         The decorative element, page 1057,999. The spec records its position but
         not its size; 454x202 is the file halved, and 1057 + 454 lands exactly
