@@ -93,7 +93,7 @@ export default function Credibility() {
       */}
       <h2
         className="absolute font-signature text-script-sm text-cream"
-        style={{ top: 60, left: 810 }}
+        style={{ top: 60, left: 966 }}
       >
         {brandsHeading}
       </h2>
@@ -123,7 +123,8 @@ export default function Credibility() {
         centreY={252.78}
         width={160}
         height={160}
-        rotate={3}
+        tilt={3}
+        rotate={1.5}
       />
 
       {/*
@@ -147,7 +148,7 @@ export default function Credibility() {
         centreY={605.78}
         width={200}
         height={120}
-        rotate={-1}
+        tilt={-1}
       />
 
     </Band>
