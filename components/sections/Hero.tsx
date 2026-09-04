@@ -78,15 +78,23 @@ export default function Hero() {
         />
       ))}
 
-      {/* Photostrip: 122.7x637.5 rotated 9deg at ~1137,209. Over panel and strip. */}
+      {/*
+        Photostrip, over both the panel and the strip. The node in Figma is
+        122.7x637.46 turned 9deg, but the export is that rotation already
+        applied: the strip sits on the diagonal of a 442x1298 canvas with
+        transparent corners. Solving which rotation maps 122.7x637.46 onto a
+        442x1298 box gives exactly 9.00deg, and the node inside works out at
+        245.5x1275.3 — a clean 2x export, as the spec asks for.
+        So the size to pass is the file's own halved (221x649), and no `rotate`;
+        adding one would turn it twice. 1137,209 is that box's top-left.
+      */}
       <Prop
         src={hero.props.photostrip}
         alt=""
-        width={123}
-        height={638}
+        width={221}
+        height={649}
         top={209}
         left={1137}
-        rotate={9}
         priority
       />
 
