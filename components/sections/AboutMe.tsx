@@ -34,6 +34,22 @@ export default function AboutMe() {
         left={1057}
       />
 
+      {/*
+        The star, tucked behind the end of "about me." — PLACED BY EYE off the
+        Figma frame, which is the only record of it. The box is bigger than the
+        star because the file carries 6px of padding left and 13 above, and Prop
+        places files rather than their content. Drawn before the heading so the
+        full stop reads over the top of it, as it does in the design.
+      */}
+      <Prop
+        src={about.props.star}
+        alt=""
+        width={108}
+        height={113}
+        top={225}
+        left={1248}
+      />
+
       {/* "about me." at 819,1175 — Bootzy 120 / 3.6px */}
       <h2
         className="absolute font-signature text-script-lg text-plum"
@@ -64,6 +80,31 @@ export default function AboutMe() {
         </p>
       ))}
 
+      {/*
+        The carousel, drawn before the camera so the photo sits behind the art
+        and shows through the screen. The arrows and caption fall outside the
+        camera, so nothing of theirs is covered by it.
+
+        Screen: the LCD is a transparent cut-out 68,48 into the camera art and
+        352x267 at its rendered size, which puts it at 865,400 in the band.
+
+        Caption: centred on the camera rather than pinned to the spec's
+        1065,1675. That coordinate is where the placeholder "[vlog]" starts,
+        and "[vlog]" set at this size is about 65 wide, which centres on the
+        camera to within a few px — so centring generalises it to captions of
+        any length. See the note below about what happened to "[vlog]".
+
+        Arrows: PLACED BY EYE, since they are not in the design at all. Centred
+        on the camera's height and clear of its artwork, which runs 808 to 1400
+        once the file's own padding is taken off.
+      */}
+      <AboutCarousel
+        slides={aboutSlides}
+        screen={{ top: 400, left: 865, width: 352, height: 267 }}
+        caption={{ top: 720, left: 797, width: 614 }}
+        arrows={{ top: 504, left: 726, right: 1424 }}
+      />
+
       {/* Camera, 614x349 at 797,1307. The file is a clean 2x of that. */}
       <Prop
         src={about.props.camera}
@@ -75,30 +116,12 @@ export default function AboutMe() {
       />
 
       {/*
-        "[vlog]" at 1065,1675 in olive. The spec gives it a colour and a
-        position but no size or face, so it takes the body face one step down.
-      */}
-      <p
-        className="absolute font-body text-body-sm text-olive"
-        style={{ top: 720, left: 1065 }}
-      >
-        {about.props.cameraCaption}
-      </p>
-
-      {/*
-        PLACED BY EYE: the spec records no position or size for the about
-        slides. This sits in the clear below the camera, which bottoms out at
-        701, and right of "[vlog]". The box is wider than it is tall so the
-        caption wraps to two lines and clears the bottom of the band — at 200
-        wide it ran to three and was cut off. Swap for measured values when
-        they exist.
-      */}
-      <AboutCarousel slides={aboutSlides} top={702} left={1130} width={360} height={180} />
-
-      {/*
-        NOT PLACED: about.props.star. It belongs to this section but the spec
-        records no coordinate for it, and unlike the carousel there is no
-        obvious gap it wants to sit in. Needs a position from the design file.
+        REPLACED: the static "[vlog]" that sat at 1065,1675 in olive. It is
+        bracketed, which in this content module means copy still to supply, and
+        it occupies the only caption slot the camera has — so the carousel's
+        changing caption now uses it, in the same olive. about.props
+        .cameraCaption is still there if "[vlog]" turns out to be real copy that
+        belongs alongside rather than a placeholder for this.
       */}
     </Band>
   )
