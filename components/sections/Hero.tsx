@@ -50,12 +50,27 @@ export default function Hero() {
     <Band
       className="bg-thistle"
       /*
-        The plum panel runs off the right of the canvas, so carry it on to the
-        right edge of the screen rather than stopping at the frame and leaving
-        thistle in the letterbox. Starts one pixel inside the frame's right
-        edge to cover the hairline its scaled, antialiased clip leaves behind.
+        The plum panel carries on to the edge of the screen on every side it
+        runs to: right to the viewport edge, and full height so it still reaches
+        top and bottom when the viewport is narrower than the canvas's 1.58
+        aspect and the frame is letterboxed.
+
+        It starts at the panel's own left edge, design x1193 — 437.5 right of
+        the canvas centre — so it lines up with the panel inside the frame and
+        leaves everything left of it alone. Sitting behind the frame, the stars
+        and the photostrip still draw over it.
       */
       bleed={
+        <div
+          className="absolute inset-y-0 right-0 bg-plum"
+          style={{ left: 'calc(50% + 437.5px * var(--canvas-scale, 1))' }}
+        />
+      }
+      /*
+        And a pixel over the frame's own right edge, which its clip antialiases
+        into a hairline of thistle that nothing behind it can cover.
+      */
+      bleedOver={
         <div
           className="absolute inset-y-0 right-0 bg-plum"
           style={{ left: 'calc(50% + (1511px * var(--canvas-scale, 1)) / 2 - 1px)' }}

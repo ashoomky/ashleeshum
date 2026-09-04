@@ -21,38 +21,60 @@ type BandProps = {
   /** The section's ground, e.g. `bg-thistle`. Fills the whole viewport. */
   className?: string
   /**
-   * Fills the letterbox where a block of the design runs off the canvas edge
-   * and should carry on to the edge of the screen — the hero's plum panel on
-   * the right, or Contact's olive and cream strips on the left.
+   * A block of the design that runs off the canvas and should carry on to the
+   * edge of the screen — the hero's plum panel on the right, or Contact's olive
+   * and cream strips on the left. Give it `inset-y-0` and it also fills the
+   * letterbox above and below, which appears whenever the viewport is narrower
+   * than the canvas's 1.58 aspect and the scale is width-limited.
    *
-   * Drawn ON TOP of the frame, so it must be positioned to start at the frame's
-   * edge. That edge is computable, because the frame is centred and its width
-   * is known: from the section's own box, its right edge sits at
+   * Drawn BEHIND the frame, so it must start where its block starts in the
+   * design, not at the frame's edge — otherwise it paints over the artwork in
+   * front of it. The frame is centred and its width is known, so a design x
+   * maps to the section's own box as
    *
-   *   calc(50% + (1511px * var(--canvas-scale)) / 2)
+   *   calc(50% + (x - 755.5)px * var(--canvas-scale))
    *
-   * and its left edge at 50% minus the same. Overlap that by a pixel. The frame
-   * is scaled by a fractional factor, so its clipped edge is antialiased and
-   * leaks a 1px hairline of the ground; starting a pixel early covers it.
-   * Percentages of the section rather than vw, so a scrollbar cannot shift it.
+   * 755.5 being half of 1511. Percentages of the section rather than vw, so a
+   * scrollbar cannot shift it once the page scrolls.
+   *
+   * Sitting behind also means no seam: the frame is scaled by a fractional
+   * factor, so its clipped edge is antialiased, and anything painted there
+   * blends into whatever is under it. Keep the frame's background transparent
+   * and that is this bleed rather than the ground.
    */
   bleed?: React.ReactNode
+  /**
+   * The same idea, drawn IN FRONT of the frame, for the strip just outside its
+   * edge. The frame is clipped — it has to be, or anything the design places
+   * past the canvas would spill into the letterbox, as the paper strip's y-4
+   * would — and that clip is antialiased at a fractional scale, so it leaves a
+   * hairline of whatever is behind it. `bleed` cannot cover that from below.
+   *
+   * Overlap the frame's edge by a pixel to hide it, e.g. for the right edge
+   *
+   *   left: calc(50% + (1511px * var(--canvas-scale)) / 2 - 1px)
+   *
+   * Keep it strictly outside the canvas, plus that one pixel: it paints over
+   * the artwork, so anything further in would cover the design.
+   */
+  bleedOver?: React.ReactNode
 }
 
-export default function Band({ children, className, bleed }: BandProps) {
+export default function Band({ children, className, bleed, bleedOver }: BandProps) {
   return (
     <section
       className={['relative flex h-dvh w-full items-center justify-center overflow-hidden', className]
         .filter(Boolean)
         .join(' ')}
     >
+      {bleed}
       <div
         className="relative h-band w-canvas shrink-0 overflow-hidden"
         style={{ scale: 'var(--canvas-scale, 1)' }}
       >
         {children}
       </div>
-      {bleed}
+      {bleedOver}
     </section>
   )
 }
