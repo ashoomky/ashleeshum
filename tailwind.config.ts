@@ -90,6 +90,8 @@ const config: Config = {
         'phone-lg': '375px', // credibility phone mockup
         'text-col': '564px', // about body column
         chip: '345px', // tagline pill
+        'chip-email': '350px', // contact email pill
+        'chip-phone': '213px', // contact phone pill
       },
 
       height: {
