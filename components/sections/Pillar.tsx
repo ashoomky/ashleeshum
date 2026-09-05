@@ -67,12 +67,25 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
     ],
     props: [
       { top: 119, left: 396, width: 185, height: 185 },
-      { top: 539, left: 1237, width: 259, height: 255 },
+      // The laptop, tucked over the note's bottom-right corner rather than
+      // its middle — the offer copy runs to y695, so this only reaches the
+      // note's last line instead of sitting across the paragraph.
+      { top: 650, left: 1237, width: 259, height: 255 },
     ],
-    heading: { top: 130, left: 543 },
-    note: { top: 230, left: 975, width: 540, height: 410 },
+    // Raised from 130: at that top the "ifestyle content" text itself (not
+    // just the L's swash) ran 36px past the phones' top edge and behind them.
+    heading: { top: 84, left: 543 },
+    // Clears the third phone (which ends at 733+309=1042) by 24px, so the
+    // paper — and the copy on it — never touches the screen. Narrowed from
+    // 540 to keep its right edge where it was. Dropped from 230 to clear the
+    // heading's own text, which — set at this width — runs to y300.
+    note: { top: 320, left: 1066, width: 445, height: 410 },
     subCaption: { top: 860, left: 113, width: 420 },
-    offsetY: -23,
+    // Re-centred after the heading moved up to clear the phones: content now
+    // runs from the heading's 84 to the sub-caption's ~884, so -6 (not the
+    // old -23, measured against the heading's former 130) centres it in the
+    // 956 band — 78px above, 78px below.
+    offsetY: -6,
   },
 
   travel: {
@@ -86,19 +99,25 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
       { top: 384, left: 937, rotate: 90 },
     ],
     props: [{ top: 71, left: 529, width: 375, height: 375 }],
-    heading: { top: 110, left: 106 },
+    // Raised from 110: the "ravel content" text itself ran 49px behind the
+    // first two phones' top edge, same issue as Lifestyle's heading.
+    heading: { top: 51, left: 106 },
     note: { top: 200, left: 809, width: 700, height: 300 },
     offsetY: 36,
   },
 
   food: {
-    // Note to the left, three phones filling the rest.
+    // Note to the left, three phones filling the rest. Shifted right from
+    // 428/737/1046: the note runs to x505 (its 545 width, from -40), so the
+    // first phone was overlapping its last 77px, over the text.
     phones: [
-      { top: 244, left: 428 },
-      { top: 244, left: 737 },
-      { top: 244, left: 1046 },
+      { top: 244, left: 525 },
+      { top: 244, left: 834 },
+      { top: 244, left: 1143 },
     ],
-    props: [{ top: 614, left: 151, width: 277, height: 159 }],
+    // Raised from 614: the offer text ends at y567, so this only needs to
+    // clear that by a bit rather than the old 47px gap.
+    props: [{ top: 590, left: 151, width: 277, height: 159 }],
     heading: { top: 72, left: 477 },
     // Runs off the left edge in the frame, as it does in the design; the
     // band's own clip is what cuts it.
