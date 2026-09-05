@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { bootzy, motherlane, alteHaas, oskon, reenie } from "./fonts";
 import "./globals.css";
 
@@ -50,7 +51,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Script id="canvas-scale" strategy="beforeInteractive">
           {`(function(){var d=document.documentElement;function s(){d.style.setProperty("--canvas-scale",String(Math.min(innerWidth/1511,innerHeight/956)))}s();addEventListener("resize",s,{passive:true})})()`}
         </Script>
-        {children}
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
   );
