@@ -107,6 +107,31 @@ type BandProps = {
    * offset its bleed itself, or the two come apart.
    */
   offsetY?: number
+  /**
+   * Extra background, in real px, added above and/or below the canvas —
+   * plain flow space outside the 1511x956 coordinate system entirely.
+   *
+   * This is the one knob for "make this section's background taller" and it
+   * is deliberately independent of everything else here: it cannot move
+   * `children` (their coordinates are all inside the canvas, not the pad),
+   * cannot need rescaling (it is real px, not design px run through
+   * `--canvas-scale`), and cannot touch `offsetY` (that still just centres
+   * the design's own content inside the canvas; this adds room outside it).
+   * Reach for it before reaching for `offsetY` or a taller `height` — both
+   * of those work in design-frame coordinates and require redoing the
+   * frame's internal centring math, where this never does.
+   *
+   * Implemented as flex-basis spacers around the canvas rather than section
+   * padding, so `bleed`/`bleedOver`'s `calc(50% + ...)` math — which assumes
+   * 50% of its containing block is the canvas's own centre — keeps working:
+   * they live inside the centring wrapper below, sized to just the canvas
+   * area, not the padded section.
+   */
+  padTop?: number
+  padBottom?: number
+  /** For an in-page anchor target, e.g. TravelNotesPopup's props linking to
+   *  the section they describe. Plain passthrough to the `<section>`. */
+  id?: string
 }
 
 /** The design's standard band. Above this a band fills the screen, below it a
@@ -120,55 +145,75 @@ export default function Band({
   bleedOver,
   height = FULL_BAND,
   offsetY = 0,
+  padTop = 0,
+  padBottom = 0,
+  id,
 }: BandProps) {
   const scaledHeight = `calc(${height}px * var(--canvas-scale, 1))`
+  const stageHeight = height >= FULL_BAND ? `max(100dvh, ${scaledHeight})` : scaledHeight
 
   return (
     <section
-      className={['relative flex w-full items-center justify-center overflow-hidden', className]
-        .filter(Boolean)
-        .join(' ')}
+      id={id}
+      className={['flex w-full flex-col overflow-hidden', className].filter(Boolean).join(' ')}
       style={{
-        minHeight: height >= FULL_BAND ? `max(100dvh, ${scaledHeight})` : scaledHeight,
+        minHeight: padTop || padBottom ? `calc(${stageHeight} + ${padTop + padBottom}px)` : stageHeight,
       }}
     >
-      {bleed}
-      {/*
-        THE SIZED BOX. This is the load-bearing part, so: CSS `scale` is a
-        transform, and transforms do not change layout size. The frame below
-        is laid out at its full 1511x956 no matter how far it is scaled down,
-        so sizing this wrapper by the frame's own box would leave 956px of
-        layout inside a section that is only as tall as the viewport — phantom
-        overflow on any screen shorter than 956, which is every laptop.
-        That overflow is invisible until something reacts to it, and then it
-        turns a section into a nested scroll container: the wheel scrolls the
-        section to its end before the page moves at all, and an absolutely
-        positioned bleed stops at the padding box while the content carries on
-        past it, breaking in two.
+      {padTop > 0 && <div aria-hidden className="w-full shrink-0" style={{ height: padTop }} />}
 
-        So this wrapper is sized to what the frame actually *looks* like —
-        the design box times the scale — and the frame is taken out of flow
-        inside it and pinned to the top left, so the visual and the layout
-        agree. No phantom overflow, no nested scrolling, one page scroll.
+      {/*
+        The stage: everything that used to be the section's own content,
+        unchanged, just moved down a level so `padTop`/`padBottom` can sit
+        outside it as plain siblings. `bleed` and `bleedOver`'s 50%-of-
+        container math targets THIS box, sized to exactly the canvas area —
+        not the section, which the padding above/below would otherwise throw
+        off by making the section taller than the canvas it is centring.
       */}
       <div
-        className="relative shrink-0"
-        style={{ width: 'calc(1511px * var(--canvas-scale, 1))', height: scaledHeight }}
+        className="relative flex w-full flex-1 items-center justify-center"
+        style={{ minHeight: stageHeight }}
       >
+        {bleed}
+        {/*
+          THE SIZED BOX. This is the load-bearing part, so: CSS `scale` is a
+          transform, and transforms do not change layout size. The frame below
+          is laid out at its full 1511x956 no matter how far it is scaled down,
+          so sizing this wrapper by the frame's own box would leave 956px of
+          layout inside a section that is only as tall as the viewport — phantom
+          overflow on any screen shorter than 956, which is every laptop.
+          That overflow is invisible until something reacts to it, and then it
+          turns a section into a nested scroll container: the wheel scrolls the
+          section to its end before the page moves at all, and an absolutely
+          positioned bleed stops at the padding box while the content carries on
+          past it, breaking in two.
+
+          So this wrapper is sized to what the frame actually *looks* like —
+          the design box times the scale — and the frame is taken out of flow
+          inside it and pinned to the top left, so the visual and the layout
+          agree. No phantom overflow, no nested scrolling, one page scroll.
+        */}
         <div
-          className="absolute top-0 left-0 w-canvas origin-top-left overflow-hidden"
-          style={{ height, scale: 'var(--canvas-scale, 1)' }}
+          className="relative shrink-0"
+          style={{ width: 'calc(1511px * var(--canvas-scale, 1))', height: scaledHeight }}
         >
-          {/* Inside the frame, so the offset is design px and scales with it. */}
           <div
-            className="absolute inset-0"
-            style={offsetY ? { transform: `translateY(${offsetY}px)` } : undefined}
+            className="absolute top-0 left-0 w-canvas origin-top-left overflow-hidden"
+            style={{ height, scale: 'var(--canvas-scale, 1)' }}
           >
-            {children}
+            {/* Inside the frame, so the offset is design px and scales with it. */}
+            <div
+              className="absolute inset-0"
+              style={offsetY ? { transform: `translateY(${offsetY}px)` } : undefined}
+            >
+              {children}
+            </div>
           </div>
         </div>
+        {bleedOver}
       </div>
-      {bleedOver}
+
+      {padBottom > 0 && <div aria-hidden className="w-full shrink-0" style={{ height: padBottom }} />}
     </section>
   )
 }
