@@ -18,8 +18,12 @@ import { about, aboutSlides } from '@/content'
 const PARAGRAPH_TOPS = [306, 441, 621]
 
 export default function AboutMe() {
+  // Content runs from the heading's top (220) to the caption's bottom (750),
+  // ignoring the two decorative props — they sit apart from the reading
+  // column and don't register as "the content" the way the text and carousel
+  // do. -7 centres that span in the 956 band: 213px above, 213px below.
   return (
-    <Band className="bg-cream" offsetY={81}>
+    <Band id="about" className="bg-cream" offsetY={-7} padTop={60} padBottom={60}>
       {/*
         The decorative element, page 1057,999. The spec records its position but
         not its size; 454x202 is the file halved, and 1057 + 454 lands exactly
