@@ -130,7 +130,43 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
   const layout = LAYOUTS[pillar.id]
 
   return (
-    <Band className="bg-cream" offsetY={layout.offsetY}>
+    // "work" is only on the first of the three — both the nav and the
+    // popup's "what i can do for you" link need one entry point into the
+    // section, and lifestyle is where that section starts.
+    <Band
+      id={pillar.id === 'lifestyle' ? 'work' : undefined}
+      className="bg-cream"
+      offsetY={layout.offsetY}
+      padTop={60}
+      padBottom={60}
+    >
+      {/*
+        The note is the bottommost layer of the three — paper, then the
+        heading, then the phones on top of both. That's what lets the title's
+        oversized initial dip slightly behind a phone (Lifestyle's L behind
+        its second phone) without either the paper or the copy on it ever
+        showing through a phone's bezel.
+      */}
+      <div className="absolute" style={layout.note}>
+        <Image src={PAPER} alt="" fill sizes={`${layout.note.width}px`} className="object-cover" />
+        {/*
+          The copy is inset past however far the paper bleeds off the canvas,
+          so a note that runs off the left edge — Food's does — still starts
+          its text inside the frame rather than under the clip.
+        */}
+        <div
+          className="relative flex h-full flex-col justify-center gap-3 pr-10"
+          style={{ paddingLeft: 40 + Math.max(0, -layout.note.left) }}
+        >
+          {pillar.offerLabel && (
+            <p className="font-body text-body-lg text-plum">{pillar.offerLabel}</p>
+          )}
+          <p className="text-justify font-body text-body-lg text-plum">{pillar.offer}</p>
+        </div>
+      </div>
+
+      <PillarHeading heading={pillar.heading} {...layout.heading} />
+
       {layout.props.map((spot, i) => (
         <Prop
           key={pillar.props[i]}
@@ -156,31 +192,6 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
           <PhoneFrame />
         </div>
       ))}
-
-      {/*
-        The note: copy on paper, set justified as the design has it. Drawn
-        before the title, which overlaps it — the design reads the title over
-        the paper, not the paper over the title.
-      */}
-      <div className="absolute" style={layout.note}>
-        <Image src={PAPER} alt="" fill sizes={`${layout.note.width}px`} className="object-cover" />
-        {/*
-          The copy is inset past however far the paper bleeds off the canvas,
-          so a note that runs off the left edge — Food's does — still starts
-          its text inside the frame rather than under the clip.
-        */}
-        <div
-          className="relative flex h-full flex-col justify-center gap-3 pr-10"
-          style={{ paddingLeft: 40 + Math.max(0, -layout.note.left) }}
-        >
-          {pillar.offerLabel && (
-            <p className="font-body text-body-lg text-plum">{pillar.offerLabel}</p>
-          )}
-          <p className="text-justify font-body text-body-lg text-plum">{pillar.offer}</p>
-        </div>
-      </div>
-
-      <PillarHeading heading={pillar.heading} {...layout.heading} />
 
       {/* Lifestyle's alone, under its phones rather than on the paper. */}
       {layout.subCaption && 'subCaption' in pillar && pillar.subCaption && (
