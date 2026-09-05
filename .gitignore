@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# raw video masters — the compressed, web-ready versions in public/videos
+# are what ships; these are the multi-hundred-MB originals they came from.
+/raw-footage
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
