@@ -225,9 +225,11 @@ export const reels: Reel[] = [
   { id: 'life-03', pillar: 'lifestyle', video: '/videos/life-03.mp4', poster: '/posters/life-03.jpg' },
   { id: 'travel-01', pillar: 'travel', video: '/videos/travel-01.mp4', poster: '/posters/travel-01.jpg' },
   { id: 'travel-02', pillar: 'travel', video: '/videos/travel-02.mp4', poster: '/posters/travel-02.jpg' },
-  // The one source shot landscape, not portrait like the other eight.
-  // Centre-cropped to the same 9:16 in both the video and its poster —
-  // worth a reshoot in portrait if that crop reads too tight.
+  // The one source shot landscape, not portrait like the other eight — kept
+  // that way rather than cropped to 9:16. This is the phone LAYOUTS.travel
+  // turns 90deg, so a landscape clip is the one that actually belongs here;
+  // an earlier version force-cropped it to portrait to match the other two
+  // phones, which just cut up the shot for no reason.
   { id: 'travel-03', pillar: 'travel', video: '/videos/travel-03.mp4', poster: '/posters/travel-03.jpg' },
   { id: 'food-01', pillar: 'food', video: '/videos/food-01.mp4', poster: '/posters/food-01.jpg' },
   { id: 'food-02', pillar: 'food', video: '/videos/food-02.mp4', poster: '/posters/food-02.jpg' },
