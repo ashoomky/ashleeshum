@@ -33,7 +33,7 @@ import { reelsByPillar, type pillars } from '@/content'
 
 type PillarData = (typeof pillars)[number]
 
-type PhoneSpot = { top: number; left: number; rotate?: number }
+type PhoneSpot = { top: number; left: number; landscape?: boolean }
 type PropSpot = { top: number; left: number; width: number; height: number }
 type Box = { top: number; left: number; width: number; height: number }
 
@@ -90,14 +90,16 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
   },
 
   travel: {
-    // Two upright, then one turned 90deg. The spec gives that one as a bounding
-    // box — 549x309 at 817,4648 — so the element is placed by the centre they
-    // share: a 309x549 phone at 937,384 turns about its middle into exactly
-    // that box.
+    // Two upright, then one turned 90deg holding a genuinely landscape reel.
+    // The spec gives that one as a bounding box — 549x309 at 817,4648 — and
+    // PhoneFrame's landscape orientation reports exactly that swapped
+    // footprint as its own size, so this positions by the box's own
+    // top-left directly rather than by an unrotated phone's centre the way
+    // an externally-rotated wrapper would have needed.
     phones: [
       { top: 231, left: 173 },
       { top: 231, left: 482 },
-      { top: 384, left: 937, rotate: 90 },
+      { top: 504, left: 817, landscape: true },
     ],
     props: [{ top: 71, left: 529, width: 375, height: 375 }],
     // Raised from 110: the "ravel content" text itself ran 49px behind the
@@ -176,20 +178,20 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
       ))}
 
       {layout.phones.map((spot, i) => (
-        <div
-          key={`${spot.top}-${spot.left}`}
-          className="absolute"
-          style={{
-            top: spot.top,
-            left: spot.left,
-            transform: spot.rotate ? `rotate(${spot.rotate}deg)` : undefined,
-          }}
-        >
-          <PhoneFrame>
-            {/* One reel per phone, in the same order as both arrays — turned
-                90deg travel phone included, since the rotation lives on this
-                wrapper and the reel just rides along with it. */}
-            {reels[i] && <Reel src={reels[i].video} poster={reels[i].poster} />}
+        <div key={`${spot.top}-${spot.left}`} className="absolute" style={{ top: spot.top, left: spot.left }}>
+          {/* One reel per phone, in the same order as both arrays. The turned
+              travel phone asks PhoneFrame for landscape orientation rather
+              than being rotated from out here — that turns only the bezel,
+              not the reel inside it, which is genuinely landscape footage
+              and needs to read upright to the viewer. */}
+          <PhoneFrame orientation={spot.landscape ? 'landscape' : 'portrait'}>
+            {reels[i] && (
+              <Reel
+                src={reels[i].video}
+                poster={reels[i].poster}
+                fit={spot.landscape ? 'contain' : 'cover'}
+              />
+            )}
           </PhoneFrame>
         </div>
       ))}
