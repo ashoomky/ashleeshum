@@ -69,8 +69,6 @@ export default function Credibility() {
       id="credibility"
       className="bg-olive"
       offsetY={OFFSET_Y}
-      padTop={60}
-      padBottom={60}
       bleed={
         <>
           <Ribbon top={166} className="rotate-band" />

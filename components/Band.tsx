@@ -126,11 +126,25 @@ type BandProps = {
    * 50% of its containing block is the canvas's own centre — keeps working:
    * they live inside the centring wrapper below, sized to just the canvas
    * area, not the padded section.
+   *
+   * DON'T USE THIS ON A BAND WITH AN `id`. Any nonzero amount here — not
+   * just a large one — makes the section taller than one viewport, because
+   * `height`-956-or-more bands already size to `max(100dvh, scaledHeight)`,
+   * and scaledHeight can never exceed 100dvh (`--canvas-scale` is computed
+   * with vh/956 as one of its two terms, specifically so it can't). So the
+   * section is already exactly one screen tall before this runs, and this
+   * adds on top of that rather than fitting inside it. Harmless for a band
+   * nobody jumps to directly, but a `#id` anchor scrolls to the section's
+   * *top*, not to its content's centre — so a padded band lands with its
+   * bottom pushed past the fold, reading as content getting cut off. Tried
+   * on About, Credibility and the Pillars for breathing room, and reverted
+   * for exactly this once they got nav links.
    */
   padTop?: number
   padBottom?: number
-  /** For an in-page anchor target, e.g. TravelNotesPopup's props linking to
-   *  the section they describe. Plain passthrough to the `<section>`. */
+  /** For an in-page anchor target, e.g. Nav's links or TravelNotesPopup's
+   *  props linking to the section they describe. Plain passthrough to the
+   *  `<section>`. */
   id?: string
 }
 

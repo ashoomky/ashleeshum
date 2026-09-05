@@ -135,13 +135,7 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
     // "work" is only on the first of the three — both the nav and the
     // popup's "what i can do for you" link need one entry point into the
     // section, and lifestyle is where that section starts.
-    <Band
-      id={pillar.id === 'lifestyle' ? 'work' : undefined}
-      className="bg-cream"
-      offsetY={layout.offsetY}
-      padTop={60}
-      padBottom={60}
-    >
+    <Band id={pillar.id === 'lifestyle' ? 'work' : undefined} className="bg-cream" offsetY={layout.offsetY}>
       {/*
         The note is the bottommost layer of the three — paper, then the
         heading, then the phones on top of both. That's what lets the title's
