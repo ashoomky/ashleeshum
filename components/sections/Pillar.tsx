@@ -28,7 +28,8 @@ import Band from '@/components/Band'
 import PhoneFrame from '@/components/PhoneFrame'
 import Prop from '@/components/Prop'
 import PillarHeading from '@/components/PillarHeading'
-import type { pillars } from '@/content'
+import Reel from '@/components/Reel'
+import { reelsByPillar, type pillars } from '@/content'
 
 type PillarData = (typeof pillars)[number]
 
@@ -128,6 +129,7 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
 
 export default function Pillar({ pillar }: { pillar: PillarData }) {
   const layout = LAYOUTS[pillar.id]
+  const reels = reelsByPillar(pillar.id)
 
   return (
     // "work" is only on the first of the three — both the nav and the
@@ -179,7 +181,7 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
         />
       ))}
 
-      {layout.phones.map((spot) => (
+      {layout.phones.map((spot, i) => (
         <div
           key={`${spot.top}-${spot.left}`}
           className="absolute"
@@ -189,7 +191,12 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
             transform: spot.rotate ? `rotate(${spot.rotate}deg)` : undefined,
           }}
         >
-          <PhoneFrame />
+          <PhoneFrame>
+            {/* One reel per phone, in the same order as both arrays — turned
+                90deg travel phone included, since the rotation lives on this
+                wrapper and the reel just rides along with it. */}
+            {reels[i] && <Reel src={reels[i].video} poster={reels[i].poster} />}
+          </PhoneFrame>
         </div>
       ))}
 

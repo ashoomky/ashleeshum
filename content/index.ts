@@ -12,7 +12,7 @@ export type Pillar = 'lifestyle' | 'travel' | 'food'
 export type Reel = {
   id: string
   pillar: Pillar
-  videoId: string // Cloudflare Stream / Bunny / Mux id, never a local file
+  video: string // self-hosted, /videos/{id}.mp4 — see public/videos
   poster: string
   caption?: string
 }
@@ -215,18 +215,23 @@ export const pillars = [
   },
 ]
 
-// NOT YET EXPORTED: no /posters/*.jpg exist in public/ — every poster below is
-// still a promise. Export them from the reels before wiring this up.
+// Self-hosted in public/videos and public/posters. The travel ids read
+// "travel-", not the "trav-" this originally shipped with — renaming three
+// video files to match a naming convention is more churn than just letting
+// the convention match what was actually uploaded.
 export const reels: Reel[] = [
-  { id: 'life-01', pillar: 'lifestyle', videoId: '[STREAM_ID]', poster: '/posters/life-01.jpg' },
-  { id: 'life-02', pillar: 'lifestyle', videoId: '[STREAM_ID]', poster: '/posters/life-02.jpg' },
-  { id: 'life-03', pillar: 'lifestyle', videoId: '[STREAM_ID]', poster: '/posters/life-03.jpg' },
-  { id: 'trav-01', pillar: 'travel', videoId: '[STREAM_ID]', poster: '/posters/trav-01.jpg' },
-  { id: 'trav-02', pillar: 'travel', videoId: '[STREAM_ID]', poster: '/posters/trav-02.jpg' },
-  { id: 'trav-03', pillar: 'travel', videoId: '[STREAM_ID]', poster: '/posters/trav-03.jpg' },
-  { id: 'food-01', pillar: 'food', videoId: '[STREAM_ID]', poster: '/posters/food-01.jpg' },
-  { id: 'food-02', pillar: 'food', videoId: '[STREAM_ID]', poster: '/posters/food-02.jpg' },
-  { id: 'food-03', pillar: 'food', videoId: '[STREAM_ID]', poster: '/posters/food-03.jpg' },
+  { id: 'life-01', pillar: 'lifestyle', video: '/videos/life-01.mp4', poster: '/posters/life-01.jpg' },
+  { id: 'life-02', pillar: 'lifestyle', video: '/videos/life-02.mp4', poster: '/posters/life-02.jpg' },
+  { id: 'life-03', pillar: 'lifestyle', video: '/videos/life-03.mp4', poster: '/posters/life-03.jpg' },
+  { id: 'travel-01', pillar: 'travel', video: '/videos/travel-01.mp4', poster: '/posters/travel-01.jpg' },
+  { id: 'travel-02', pillar: 'travel', video: '/videos/travel-02.mp4', poster: '/posters/travel-02.jpg' },
+  // The one source shot landscape, not portrait like the other eight.
+  // Centre-cropped to the same 9:16 in both the video and its poster —
+  // worth a reshoot in portrait if that crop reads too tight.
+  { id: 'travel-03', pillar: 'travel', video: '/videos/travel-03.mp4', poster: '/posters/travel-03.jpg' },
+  { id: 'food-01', pillar: 'food', video: '/videos/food-01.mp4', poster: '/posters/food-01.jpg' },
+  { id: 'food-02', pillar: 'food', video: '/videos/food-02.mp4', poster: '/posters/food-02.jpg' },
+  { id: 'food-03', pillar: 'food', video: '/videos/food-03.mp4', poster: '/posters/food-03.jpg' },
 ]
 
 export const reelsByPillar = (p: Pillar) => reels.filter((r) => r.pillar === p)
