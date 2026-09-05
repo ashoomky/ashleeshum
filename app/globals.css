@@ -1,2 +1,22 @@
 @import "tailwindcss";
 @config "../tailwind.config.ts";
+
+/*
+ * Nav's anchor links (and TravelNotesPopup's) rely on both of these:
+ *
+ * - scroll-padding-top keeps a section's top clear of the fixed nav (h-16 =
+ *   64px) when the browser jumps to it — without it, the nav would cover
+ *   the first 64px of whatever the link scrolled to.
+ * - scroll-behavior makes that jump an animated scroll rather than instant,
+ *   guarded by prefers-reduced-motion since Tailwind's own scroll-smooth
+ *   utility does not carry that guard.
+ */
+html {
+  scroll-padding-top: 64px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
