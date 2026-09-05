@@ -73,6 +73,13 @@ const config: Config = {
       body: ['30px', { lineHeight: 'normal', letterSpacing: '0.9px' }],
       'body-sm': ['25px', { lineHeight: 'normal', letterSpacing: '0.75px' }],
       caption: ['20px', { lineHeight: 'normal', letterSpacing: '0.6px' }],
+
+      // travel notes popup — not in the Figma spec (the popup's contents
+      // aren't a documented frame), so these are placed by eye rather than
+      // measured. Handwriting faces read smaller than they measure, hence
+      // the looser line-height than the body scale above.
+      note: ['20px', { lineHeight: '1.3', letterSpacing: 'normal' }],
+      'note-close': ['32px', { lineHeight: '1', letterSpacing: 'normal' }],
     },
 
     extend: {

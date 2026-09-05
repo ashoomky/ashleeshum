@@ -275,15 +275,32 @@ export const travelNotes = {
     toy: '/popup/jellycat.png',
     plane: '/popup/paper-plane.png',
   },
+  /**
+   * `label` is the caption under each prop in the popup ("about me",
+   * "credibility", "what i can do for you"); `linkTo` is the section id that
+   * prop jumps to. Both live here rather than in the component because
+   * they're copy/navigation decisions, same reasoning as everything else in
+   * this file — see TravelNotesPopup for where the ids it points at come
+   * from (Band's `id` prop on AboutMe, Credibility and the lifestyle pillar).
+   */
   notes: [
-    { id: 'ny', text: 'new york has a special place in my heart, my dream city :,)' },
+    {
+      id: 'ny',
+      text: 'new york has a special place in my heart, my dream city :,)',
+      label: 'about me',
+      linkTo: 'about',
+    },
     {
       id: 'fact',
       text: 'fun fact: i own a peanut jellycat named bernie! (AKA bernacle AKA big bern AKA bern)',
+      label: 'credibility',
+      linkTo: 'credibility',
     },
     {
       id: 'travel',
       text: "i love travelling and experiencing new cultures, i've been to over 9 countries so far - and counting!",
+      label: 'what i can\ndo for you',
+      linkTo: 'work',
     },
   ],
 }
