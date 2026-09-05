@@ -282,11 +282,13 @@ export const travelNotes = {
   },
   /**
    * `label` is the caption under each prop in the popup ("about me",
-   * "credibility", "what i can do for you"); `linkTo` is the section id that
+   * "experience", "what i can do for you"); `linkTo` is the section id that
    * prop jumps to. Both live here rather than in the component because
    * they're copy/navigation decisions, same reasoning as everything else in
    * this file — see TravelNotesPopup for where the ids it points at come
    * from (Band's `id` prop on AboutMe, Credibility and the lifestyle pillar).
+   * `linkTo` still says 'credibility' — that's the section's own id, unrenamed;
+   * only the label reads "experience" now, matching the nav.
    */
   notes: [
     {
@@ -298,7 +300,7 @@ export const travelNotes = {
     {
       id: 'fact',
       text: 'fun fact: i own a peanut jellycat named bernie! (AKA bernacle AKA big bern AKA bern)',
-      label: 'credibility',
+      label: 'experience',
       linkTo: 'credibility',
     },
     {

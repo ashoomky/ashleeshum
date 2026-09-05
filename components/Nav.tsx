@@ -1,7 +1,7 @@
 // components/Nav.tsx
 //
 // The one piece of page chrome that isn't a Band: a fixed top bar with
-// anchor links to the four sections worth jumping straight to. Not part of
+// anchor links to the five sections worth jumping straight to. Not part of
 // the Figma spec (it documents bands, not navigation), so this is plain
 // Tailwind spacing rather than the canvas-scale system every section uses —
 // a nav bar is meant to stay a constant size regardless of viewport, which
@@ -16,6 +16,10 @@
 
 const LINKS = [
   { href: '#about', label: 'about' },
+  // Credibility's own id — that band carries "brands i've worked with" and
+  // "experience / tools", and "experience" is what both the nav and the
+  // travel notes popup call it now.
+  { href: '#credibility', label: 'experience' },
   { href: '#work', label: 'work' },
   { href: '#process', label: 'process' },
   { href: '#contact', label: 'contact' },
