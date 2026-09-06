@@ -124,15 +124,12 @@ export default function Credibility() {
         row follows it.
 
         FROM THE SCREENSHOT: 160 square rather than the spec's ~128, which
-        nearly fills the ribbon. Starts at the spec's x1057... no, at 978 —
-        see LogoRow: the brand list is only 3 long, so it repeats from there,
-        16px apart, cycling back through the same 3 until it clears the
-        canvas, rather than stopping after one lap and leaving the rest of
-        the ribbon bare.
+        nearly fills the ribbon. Only 3 brands exist, so LogoRow repeats them,
+        edge to edge across the whole canvas rather than the spec's one lap
+        starting at x1057 — a fixed count left most of the ribbon bare.
       */}
       <LogoRow
         items={brands}
-        startLeft={978}
         gap={16}
         centreY={252.78}
         width={160}
@@ -147,8 +144,8 @@ export default function Credibility() {
         where the `tools` list finally has a home. Sized into a 200x120 box
         rather than by height alone, so each fills its slot as far as its own
         proportions allow: these run from 1.74 to 3.45 wide-to-tall, so
-        HubSpot comes out 200x58 where DaVinci is 120x120. 58px apart and
-        repeating past the sixth, same reasoning as the brand row above.
+        HubSpot comes out 200x58 where DaVinci is 120x120. Repeats edge to
+        edge past the sixth, same reasoning as the brand row above.
 
         Seated on the ribbon's own centre rather than the spec's 2800-2811
         line, and following it: the -1deg turn lifts that centre from y594 at
@@ -157,7 +154,6 @@ export default function Credibility() {
       */}
       <LogoRow
         items={[...experience, ...tools]}
-        startLeft={12}
         gap={58}
         centreY={605.78}
         width={200}
