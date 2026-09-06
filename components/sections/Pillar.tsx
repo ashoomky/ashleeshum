@@ -75,7 +75,7 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
       // the canvas, an accepted bleed rather than covering copy meant to be
       // read. Depends on the offer copy staying roughly this length; a much
       // longer rewrite would need this revisited.
-      { top: 770, left: 1237, width: 259, height: 255 },
+      { top: 710, left: 1280, width: 259, height: 255 },
     ],
     // Raised from 130: at that top the "ifestyle content" text itself (not
     // just the L's swash) ran 36px past the phones' top edge and behind them.

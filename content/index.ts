@@ -90,8 +90,8 @@ export const about = {
   // fixed column, does not change as the carousel advances
   paragraphs: [
     'i have a passion for anything to do with marketing, tech and product.',
-    'i love being able to contribute to my community through making meaningful content, connecting people all around the world.',
-    'i am constantly seeking new experiences and open to connect :)',
+    'i love being able to contribute to my community through creating meaningful content, connecting people all around the world.',
+    'i am constantly seeking new experiences that can develop my passions and would love to connect :)',
   ],
   props: {
     musicNotes: '/props/about-decor.png', // the decorative element at 1057,999
