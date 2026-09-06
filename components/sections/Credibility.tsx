@@ -77,41 +77,6 @@ export default function Credibility() {
         </>
       }
     >
-      {/* Phone mockup, 375x666 at 565,2352 — PhoneFrame's large size exactly.
-          A three-second cut of each portrait reel, stitched into one loop —
-          a highlight reel rather than any one clip, since no single pillar
-          owns the phone that sits beside all three's logos. Ambient, same
-          treatment as the About camera: autoplay, looping, muted, no
-          controls — this is a backdrop, not something to interact with. */}
-      <div className="absolute" style={{ top: 120, left: 565 }}>
-        <PhoneFrame size="large">
-          <video
-            src={highlightReel.video}
-            poster={highlightReel.poster}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover"
-          />
-        </PhoneFrame>
-      </div>
-
-      {/*
-        FROM THE SCREENSHOT: the star, sitting over the phone's top left
-        corner. The spec records it as belonging to this section but gives no
-        coordinate. The box is a little larger than the star because the file
-        carries 8px of padding down its left edge.
-      */}
-      <Prop
-        src={credibilityProps.star}
-        alt=""
-        width={138}
-        height={135}
-        top={61}
-        left={508}
-      />
-
       {/*
         Turned with the band so it sits parallel just above it, rather than
         cutting across it. The band drops 27px over this title's width, so an
@@ -197,6 +162,45 @@ export default function Credibility() {
         tilt={-1}
       />
 
+      {/* Phone mockup, 375x666 at 565,2352 — PhoneFrame's large size exactly.
+          Drawn after both logo rows, not before: the lower row's third mark
+          (left 527, width 200) falls under the phone's own 565-940 span, and
+          painting the phone last is what puts it in front rather than the
+          logo showing through on top of it.
+          A three-second cut of each portrait reel, stitched into one loop —
+          a highlight reel rather than any one clip, since no single pillar
+          owns the phone that sits beside all three's logos. Ambient, same
+          treatment as the About camera: autoplay, looping, muted, no
+          controls — this is a backdrop, not something to interact with. */}
+      <div className="absolute" style={{ top: 120, left: 565 }}>
+        <PhoneFrame size="large">
+          <video
+            src={highlightReel.video}
+            poster={highlightReel.poster}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+          />
+        </PhoneFrame>
+      </div>
+
+      {/*
+        FROM THE SCREENSHOT: the star, sitting over the phone's top left
+        corner. The spec records it as belonging to this section but gives no
+        coordinate. The box is a little larger than the star because the file
+        carries 8px of padding down its left edge. Drawn after the phone so it
+        stays on top of it, same as before.
+      */}
+      <Prop
+        src={credibilityProps.star}
+        alt=""
+        width={138}
+        height={135}
+        top={61}
+        left={508}
+      />
     </Band>
   )
 }
