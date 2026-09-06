@@ -224,13 +224,14 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
               )}
             </PhoneFrame>
 
-            {/* View/like counts and a "watch here" caption, one per phone —
-                see VideoStats for why the data is a placeholder and the
-                landscape arrangement isn't a measured Figma node. */}
+            {/* View/like counts and a "watch here" link out to the original
+                post — see VideoStats for why the landscape arrangement
+                isn't a measured Figma node. */}
             {reels[i] && (
               <VideoStats
                 views={reels[i].views}
                 likes={reels[i].likes}
+                watchHref={reels[i].watchHref}
                 orientation={spot.landscape ? 'landscape' : 'portrait'}
               />
             )}

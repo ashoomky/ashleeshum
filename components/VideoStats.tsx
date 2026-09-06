@@ -31,6 +31,9 @@ import { Heart, Play } from 'lucide-react'
 type VideoStatsProps = {
   views: string
   likes: string
+  /** The original post — an external link, so "watch here" opens it in a
+   *  new tab rather than navigating away from the reel already playing. */
+  watchHref: string
   orientation?: 'portrait' | 'landscape'
 }
 
@@ -40,7 +43,7 @@ const PORTRAIT_SIZE = { width: 270, height: 76 }
 // palette entirely with five named colours, so `text-white` compiles to no
 // rule at all — same trap Reel.tsx hit with `bg-black`. cream (#f4f2e0) is
 // this project's near-white.
-export default function VideoStats({ views, likes, orientation = 'portrait' }: VideoStatsProps) {
+export default function VideoStats({ views, likes, watchHref, orientation = 'portrait' }: VideoStatsProps) {
   if (orientation === 'landscape') {
     return (
       <div className="absolute top-1/2 left-full ml-4 -translate-y-1/2">
@@ -59,7 +62,14 @@ export default function VideoStats({ views, likes, orientation = 'portrait' }: V
             <Play size={18} fill="currentColor" />
             {views}
           </span>
-          <span className="font-body text-stat-caption underline">watch here</span>
+          <a
+            href={watchHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-body text-stat-caption underline"
+          >
+            watch here
+          </a>
         </div>
       </div>
     )
@@ -87,7 +97,14 @@ export default function VideoStats({ views, likes, orientation = 'portrait' }: V
             {likes}
           </span>
         </div>
-        <span className="font-body text-stat-caption underline">watch here</span>
+        <a
+          href={watchHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-body text-stat-caption underline"
+        >
+          watch here
+        </a>
       </div>
     </div>
   )

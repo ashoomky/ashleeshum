@@ -16,14 +16,16 @@ export type Reel = {
   poster: string
   caption?: string
   /**
-   * PLACEHOLDER — every reel carries the same '2.4k'/'1.2k' pair straight off
-   * the Figma sample chip (node 2222:50) rather than real per-video numbers,
-   * which are still to come. Strings, not numbers: the design writes them
-   * pre-formatted ("2.4k"), and that formatting is the source's call to make
-   * once real figures arrive, not something to derive from a raw count here.
+   * Pre-formatted strings ("9.1k", "800+"), not numbers — each platform's own
+   * count formatting, not something to derive from a raw number here. `likes`
+   * is what was given as "engagement"; the chip's heart icon is the only
+   * reading of it on the page, so the field keeps that name.
    */
   views: string
   likes: string
+  /** Where "watch here" on the reel's stat chip links — the original post,
+   *  not the self-hosted clip already playing in the phone above it. */
+  watchHref: string
 }
 
 /**
@@ -254,26 +256,95 @@ export const pillars = [
 // "travel-", not the "trav-" this originally shipped with — renaming three
 // video files to match a naming convention is more churn than just letting
 // the convention match what was actually uploaded.
-//
-// PLACEHOLDER_STATS: see Reel's own doc — every entry below spreads the same
-// pair until real per-video numbers replace it.
-const PLACEHOLDER_STATS = { views: '2.4k', likes: '1.2k' }
-
 export const reels: Reel[] = [
-  { id: 'life-01', pillar: 'lifestyle', video: '/videos/life-01.mp4', poster: '/posters/life-01.jpg', ...PLACEHOLDER_STATS },
-  { id: 'life-02', pillar: 'lifestyle', video: '/videos/life-02.mp4', poster: '/posters/life-02.jpg', ...PLACEHOLDER_STATS },
-  { id: 'life-03', pillar: 'lifestyle', video: '/videos/life-03.mp4', poster: '/posters/life-03.jpg', ...PLACEHOLDER_STATS },
-  { id: 'travel-01', pillar: 'travel', video: '/videos/travel-01.mp4', poster: '/posters/travel-01.jpg', ...PLACEHOLDER_STATS },
-  { id: 'travel-02', pillar: 'travel', video: '/videos/travel-02.mp4', poster: '/posters/travel-02.jpg', ...PLACEHOLDER_STATS },
+  {
+    id: 'life-01',
+    pillar: 'lifestyle',
+    video: '/videos/life-01.mp4',
+    poster: '/posters/life-01.jpg',
+    views: '9.1k',
+    likes: '800+',
+    watchHref: 'https://www.tiktok.com/@ashoom.ky/video/7520208456784088328',
+  },
+  {
+    id: 'life-02',
+    pillar: 'lifestyle',
+    video: '/videos/life-02.mp4',
+    poster: '/posters/life-02.jpg',
+    views: '17k',
+    likes: '2k+',
+    watchHref: 'https://www.tiktok.com/@ashoom.ky/video/7521302846566829330',
+  },
+  {
+    id: 'life-03',
+    pillar: 'lifestyle',
+    video: '/videos/life-03.mp4',
+    poster: '/posters/life-03.jpg',
+    views: '6.5k',
+    likes: '200+',
+    watchHref: 'https://www.tiktok.com/@ashoom.ky/video/7625787651295137045',
+  },
+  {
+    id: 'travel-01',
+    pillar: 'travel',
+    video: '/videos/travel-01.mp4',
+    poster: '/posters/travel-01.jpg',
+    views: '11.7k',
+    likes: '1k+',
+    watchHref: 'https://www.instagram.com/reel/DWpw1n0D8-N/?hl=en',
+  },
+  {
+    id: 'travel-02',
+    pillar: 'travel',
+    video: '/videos/travel-02.mp4',
+    poster: '/posters/travel-02.jpg',
+    views: '2k+',
+    likes: '200+',
+    watchHref: 'https://www.tiktok.com/@ashoom.ky/video/7660703109580180757',
+  },
   // The one source shot landscape, not portrait like the other eight — kept
   // that way rather than cropped to 9:16. This is the phone LAYOUTS.travel
   // turns 90deg, so a landscape clip is the one that actually belongs here;
   // an earlier version force-cropped it to portrait to match the other two
   // phones, which just cut up the shot for no reason.
-  { id: 'travel-03', pillar: 'travel', video: '/videos/travel-03.mp4', poster: '/posters/travel-03.jpg', ...PLACEHOLDER_STATS },
-  { id: 'food-01', pillar: 'food', video: '/videos/food-01.mp4', poster: '/posters/food-01.jpg', ...PLACEHOLDER_STATS },
-  { id: 'food-02', pillar: 'food', video: '/videos/food-02.mp4', poster: '/posters/food-02.jpg', ...PLACEHOLDER_STATS },
-  { id: 'food-03', pillar: 'food', video: '/videos/food-03.mp4', poster: '/posters/food-03.jpg', ...PLACEHOLDER_STATS },
+  {
+    id: 'travel-03',
+    pillar: 'travel',
+    video: '/videos/travel-03.mp4',
+    poster: '/posters/travel-03.jpg',
+    views: '6.7k+',
+    likes: '300+',
+    watchHref: 'https://www.youtube.com/watch?v=KK1dFcWQDkM',
+  },
+  {
+    id: 'food-01',
+    pillar: 'food',
+    video: '/videos/food-01.mp4',
+    poster: '/posters/food-01.jpg',
+    views: '3k+',
+    likes: '200+',
+    watchHref: 'https://www.tiktok.com/@ashoom.ky/video/7584003394457586965',
+  },
+  {
+    id: 'food-02',
+    pillar: 'food',
+    video: '/videos/food-02.mp4',
+    poster: '/posters/food-02.jpg',
+    views: '12.2k+',
+    likes: '1k+',
+    // A TikTok photo post, not a video — the source itself is a carousel of
+    // photos, unlike the other eight's video posts.
+    watchHref: 'https://www.tiktok.com/@ashoom.ky/photo/7571008215681420552',
+  },
+  {
+    id: 'food-03',
+    pillar: 'food',
+    video: '/videos/food-03.mp4',
+    poster: '/posters/food-03.jpg',
+    views: '10.2k',
+    likes: '600+',
+    watchHref: 'https://www.tiktok.com/@ashoom.ky/video/7551595479105080584',
+  },
 ]
 
 export const reelsByPillar = (p: Pillar) => reels.filter((r) => r.pillar === p)
@@ -298,7 +369,7 @@ export const testimonials = [
     handle: 'services',
     label: 'what i can offer',
     quote:
-      'i make content for brands alongisde myself ranging across lifestyle, food and travel content that feels like a real recommendation, not an ad. i shoot, edit and repurpose it all myself across tiktok, instagram and youtube. always keen to collab, reach out!',
+      'i make content for brands alongside myself ranging across lifestyle, food and travel content that feels like a real recommendation, not an ad. i shoot, edit and repurpose it all myself across tiktok, instagram and youtube. always keen to collab, reach out!',
   },
 ]
 
