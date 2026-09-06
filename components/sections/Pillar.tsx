@@ -29,6 +29,7 @@ import PhoneFrame from '@/components/PhoneFrame'
 import Prop from '@/components/Prop'
 import PillarHeading from '@/components/PillarHeading'
 import Reel from '@/components/Reel'
+import VideoStats from '@/components/VideoStats'
 import { reelsByPillar, type pillars } from '@/content'
 
 type PillarData = (typeof pillars)[number]
@@ -203,20 +204,37 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
 
       {layout.phones.map((spot, i) => (
         <div key={`${spot.top}-${spot.left}`} className="absolute" style={{ top: spot.top, left: spot.left }}>
-          {/* One reel per phone, in the same order as both arrays. The turned
-              travel phone asks PhoneFrame for landscape orientation rather
-              than being rotated from out here — that turns only the bezel,
-              not the reel inside it, which is genuinely landscape footage
-              and needs to read upright to the viewer. */}
-          <PhoneFrame orientation={spot.landscape ? 'landscape' : 'portrait'}>
+          {/* `relative`, not the outer div: VideoStats positions itself
+              against THIS box's own edges (left-1/2, top-full, left-full...),
+              so this needs to be its containing block, one level in from the
+              band-relative top/left placement above. */}
+          <div className="relative">
+            {/* One reel per phone, in the same order as both arrays. The
+                turned travel phone asks PhoneFrame for landscape orientation
+                rather than being rotated from out here — that turns only
+                the bezel, not the reel inside it, which is genuinely
+                landscape footage and needs to read upright to the viewer. */}
+            <PhoneFrame orientation={spot.landscape ? 'landscape' : 'portrait'}>
+              {reels[i] && (
+                <Reel
+                  src={reels[i].video}
+                  poster={reels[i].poster}
+                  fit={spot.landscape ? 'contain' : 'cover'}
+                />
+              )}
+            </PhoneFrame>
+
+            {/* View/like counts and a "watch here" caption, one per phone —
+                see VideoStats for why the data is a placeholder and the
+                landscape arrangement isn't a measured Figma node. */}
             {reels[i] && (
-              <Reel
-                src={reels[i].video}
-                poster={reels[i].poster}
-                fit={spot.landscape ? 'contain' : 'cover'}
+              <VideoStats
+                views={reels[i].views}
+                likes={reels[i].likes}
+                orientation={spot.landscape ? 'landscape' : 'portrait'}
               />
             )}
-          </PhoneFrame>
+          </div>
         </div>
       ))}
 

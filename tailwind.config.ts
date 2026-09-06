@@ -74,6 +74,11 @@ const config: Config = {
       'body-sm': ['25px', { lineHeight: 'normal', letterSpacing: '0.75px' }],
       caption: ['20px', { lineHeight: 'normal', letterSpacing: '0.6px' }],
 
+      // reel stats (the play/heart count chip under each phone) — "watch
+      // here", node 2222:39. The counts themselves reuse `caption` above,
+      // which already matches that node's 20px/0.6px exactly.
+      'stat-caption': ['10px', { lineHeight: 'normal', letterSpacing: '0.3px' }],
+
       // travel notes popup — not in the Figma spec (the popup's contents
       // aren't a documented frame), so these are placed by eye rather than
       // measured. Handwriting faces read smaller than they measure, hence
