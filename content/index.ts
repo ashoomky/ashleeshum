@@ -122,17 +122,17 @@ export const aboutSlides: AboutSlide[] = [
   {
     image: '/about/katara.png',
     alt: '[ALT TEXT]',
-    caption: 'katara from “avatar and the last air bender”',
+    caption: 'one of my fav characters: katara from “avatar and the last air bender”',
   },
   {
     image: '/about/chocolate.png',
     alt: '[ALT TEXT]',
-    caption: 'froyo + dubai chocolate, ofc',
+    caption: 'i could live off froyo + dubai chocolate forever',
   },
   {
     image: '/about/black-widow.png',
     alt: '[ALT TEXT]',
-    caption: 'black widow in captain america winter soldier',
+    caption: 'black widow is my fav marvel character!! specifically in captain america winter soldier',
   },
   {
     image: '/about/penguin.png',
@@ -147,7 +147,7 @@ export const aboutSlides: AboutSlide[] = [
   {
     image: '/about/books.png',
     alt: '[ALT TEXT]',
-    caption: "fantasy - my fav genre (don't talk to me about the poppy war trilogy)",
+    caption: "fantasy is my fav genre (don't talk to me about the poppy war trilogy)",
   },
 ]
 
@@ -214,7 +214,7 @@ export const pillars = [
   {
     id: 'lifestyle' as Pillar,
     heading: 'Lifestyle content',
-    subCaption: 'incl. beauty, fashion, self development',
+    subCaption: '',
     offerLabel: '',
     offer:
       'my lifestyle content is engaging and aesthetic, providing relateable and inspirational content. a few niches of mine contain content about beauty, fashion and self development!',
@@ -281,10 +281,10 @@ export const processSteps = [
 
 export const testimonials = [
   {
-    handle: 'dailybean',
-    label: 'testimonial',
+    handle: 'services',
+    label: 'what i can offer',
     quote:
-      'ashlee has been amazing to work with! her videos manage to capture the audience in an engaging and captivating way, would definitely work with her again!',
+      'i make content for brands alongisde myself ranging across lifestyle, food and travel content that feels like a real recommendation, not an ad. i shoot, edit and repurpose it all myself across tiktok, instagram and youtube. always keen to collab, reach out!',
   },
 ]
 
