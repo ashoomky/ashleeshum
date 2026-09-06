@@ -26,12 +26,17 @@
 // rounding error already, so no offsetY is needed here, unlike most other
 // sections — which also means the bleed strips (immune to offsetY, same as
 // any bleed) can't drift out of register with the rest of the band anyway.
+// The social row sits beside the chips rather than below them for exactly
+// this reason: added underneath, it would push that span (and the offset
+// needed to re-centre it) around for no reason beyond where three small
+// icons happen to sit.
 //
 // Static.
 
 import Band from '@/components/Band'
 import Prop from '@/components/Prop'
 import Chip from '@/components/Chip'
+import SocialLinks from '@/components/SocialLinks'
 import { contact } from '@/content'
 
 /** Half the canvas width (1511/2), for mapping a design x into the section's
@@ -92,6 +97,13 @@ export default function LetsWorkTogether() {
       >
         <Chip className="w-chip-phone font-body text-caption">{contact.phone}</Chip>
       </a>
+
+      {/* Beside the two chips, not under them — vertically centred on their
+          own 40px row (761 + (40-30)/2), starting a 30px gap past the phone
+          pill's own right edge (763 + 213). Big enough to read against the
+          plum, plain enough not to compete with the email/phone pair that
+          are the actual point of this section. */}
+      <SocialLinks className="absolute gap-4 text-cream" iconSize={30} style={{ top: 766, left: 1006 }} />
     </Band>
   )
 }

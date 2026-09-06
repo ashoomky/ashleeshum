@@ -44,57 +44,11 @@
 
 import { useEffect } from 'react'
 import Image from 'next/image'
-import { travelNotes, contact, hero } from '@/content'
+import { travelNotes, contact } from '@/content'
+import SocialLinks from '@/components/SocialLinks'
+import { Envelope } from '@/components/SocialIcon'
 
 const PROP_IMAGES = [travelNotes.props.nySticker, travelNotes.props.toy, travelNotes.props.plane]
-
-function Envelope() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="5" width="18" height="14" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
-      <path
-        d="M4 6.5 12 13 20 6.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-function Instagram() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.6" />
-      <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.6" />
-      <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" />
-    </svg>
-  )
-}
-
-function TikTok() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M14 3v10.5a3 3 0 1 1-2.4-2.94M14 3c.4 2.2 2 3.8 4.2 4.1"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-function YouTube() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="2.5" y="6" width="19" height="12" rx="3.5" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M10.5 9.5 15 12l-4.5 2.5Z" fill="currentColor" />
-    </svg>
-  )
-}
 
 type TravelNotesCardProps = {
   /** Called when a note or "contact me!!" is clicked — the modal uses this
@@ -146,18 +100,11 @@ export function TravelNotesCard({ onNavigate }: TravelNotesCardProps) {
           <a href="#contact" onClick={() => onNavigate?.()} className="font-signature text-caption font-bold text-ink">
             contact me!!
           </a>
-          <div className="flex items-center gap-4 text-ink">
-            {hero.socials.map((social) => (
-              <a key={social.platform} href={social.href}>
-                {social.platform === 'instagram' && <Instagram />}
-                {social.platform === 'tiktok' && <TikTok />}
-                {social.platform === 'youtube' && <YouTube />}
-              </a>
-            ))}
-            <a href={`mailto:${contact.email}`}>
+          <SocialLinks className="gap-4 text-ink" iconSize={26}>
+            <a href={`mailto:${contact.email}`} style={{ width: 26, height: 26 }}>
               <Envelope />
             </a>
-          </div>
+          </SocialLinks>
         </div>
       </div>
     </div>

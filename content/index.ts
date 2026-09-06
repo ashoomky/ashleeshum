@@ -91,7 +91,8 @@ export const about = {
   paragraphs: [
     'i have a passion for anything to do with marketing, tech and product.',
     'i love being able to contribute to my community through creating meaningful content, connecting people all around the world.',
-    'i am constantly seeking new experiences that can develop my passions and would love to connect :)',
+    "i am constantly seeking new experiences and opportunities to learn, create and grow within the things i'm passionate about.",
+    "let's collaborate! :)",
   ],
   props: {
     musicNotes: '/props/about-decor.png', // the decorative element at 1057,999

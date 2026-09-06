@@ -15,7 +15,7 @@ import AboutCarousel from '@/components/AboutCarousel'
 import { about, aboutSlides } from '@/content'
 
 /** Paragraph tops, page 1261 / 1396 / 1576 less the band's 955. */
-const PARAGRAPH_TOPS = [250, 390, 570]
+const PARAGRAPH_TOPS = [250, 390, 570, 750]
 
 export default function AboutMe() {
   // Content runs from the heading's top (220) to the caption's bottom (750),

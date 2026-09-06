@@ -23,6 +23,7 @@
 import Band from '@/components/Band'
 import Prop from '@/components/Prop'
 import Chip from '@/components/Chip'
+import SocialLinks from '@/components/SocialLinks'
 import { hero } from '@/content'
 
 /**
@@ -208,14 +209,18 @@ export default function Hero() {
         <div className="absolute" style={{ top: 686, left: 662 }}>
           <Chip className="w-chip font-heading text-tagline">{hero.tagline}</Chip>
         </div>
-      </div>
 
-      {/*
-        NOT BUILT: the three social icons, at 639,715 (90px), 711,730 (59px) and
-        756,721 (79px). No icon artwork exists in public/ yet, and two of the
-        three hrefs in content are still placeholders, so there is nothing
-        honest to render here.
-      */}
+        {/*
+          figmaspec places three social icons here as overlapping boxes —
+          "639,715 (90px), 711,730 (59px), 756,721 (79px)" — sized for actual
+          brand artwork that's never been exported (see SocialIcon). A plain
+          small row reads better for the inline glyphs standing in for it
+          than reproducing those overlaps would, so this departs from the
+          spec's numbers in favour of a simple, evenly-spaced line under the
+          tagline instead.
+        */}
+        <SocialLinks className="absolute gap-4 text-plum" iconSize={26} style={{ top: 746, left: 662 }} />
+      </div>
     </Band>
   )
 }
