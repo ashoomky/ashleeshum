@@ -124,13 +124,16 @@ export default function Credibility() {
         row follows it.
 
         FROM THE SCREENSHOT: 160 square rather than the spec's ~128, which
-        nearly fills the ribbon. At that size three no longer fit starting from
-        the spec's x1057 — they would run to 1569, past the canvas — so the row
-        is shifted left to end at 1490 instead.
+        nearly fills the ribbon. Starts at the spec's x1057... no, at 978 —
+        see LogoRow: the brand list is only 3 long, so it repeats from there,
+        16px apart, cycling back through the same 3 until it clears the
+        canvas, rather than stopping after one lap and leaving the rest of
+        the ribbon bare.
       */}
       <LogoRow
         items={brands}
-        lefts={[978, 1154, 1330]}
+        startLeft={978}
+        gap={16}
         centreY={252.78}
         width={160}
         height={160}
@@ -139,23 +142,23 @@ export default function Credibility() {
       />
 
       {/*
-        FROM THE SCREENSHOT: six marks, not the spec's four — CapCut and
-        DaVinci join the study and certification ones, which is where the
-        `tools` list finally has a home. Six no longer fit the spec's x12/245/
-        488/713, so they are spread evenly across the canvas at 257 apart,
-        which lands the last at 1299 — close to where the screenshot puts it.
-        Sized into a 200x120 box rather than by height alone, so each fills its
-        slot as far as its own proportions allow: these run from 1.74 to 3.45
-        wide-to-tall, so HubSpot comes out 200x58 where DaVinci is 120x120.
+        FROM THE SCREENSHOT: six marks feeding the row, not the spec's four —
+        CapCut and DaVinci join the study and certification ones, which is
+        where the `tools` list finally has a home. Sized into a 200x120 box
+        rather than by height alone, so each fills its slot as far as its own
+        proportions allow: these run from 1.74 to 3.45 wide-to-tall, so
+        HubSpot comes out 200x58 where DaVinci is 120x120. 58px apart and
+        repeating past the sixth, same reasoning as the brand row above.
 
         Seated on the ribbon's own centre rather than the spec's 2800-2811
         line, and following it: the -1deg turn lifts that centre from y594 at
-        the right of the row to y617 at the left, so no single y keeps all six
-        on the ribbon and each takes the one belonging to its own x.
+        the right of the row to y617 at the left, so no single y keeps every
+        logo on the ribbon and each takes the one belonging to its own x.
       */}
       <LogoRow
         items={[...experience, ...tools]}
-        lefts={[12, 269, 527, 784, 1042, 1299]}
+        startLeft={12}
+        gap={58}
         centreY={605.78}
         width={200}
         height={120}

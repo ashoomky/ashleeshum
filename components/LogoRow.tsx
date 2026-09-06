@@ -24,6 +24,13 @@
 // number. Turning each logo by the full ribbon angle makes the row dead
 // parallel to the ribbon, which reads as more tilt than the design wants. The
 // logos ride the ribbon's line while sitting straighter than it does.
+//
+// POSITIONS ARE GENERATED, NOT LISTED: a fixed `lefts` array is what produced
+// the bug this replaced — a short, hand-placed list runs out partway across
+// the ribbon, leaving it visibly empty past the last logo. Instead the row
+// tiles `items` end to end at one constant gap, cycling back to the start of
+// the list, until it clears the canvas — the same repeat-until-it-runs-off
+// logic regardless of how many logos or how wide the canvas is.
 
 import Image from 'next/image'
 
@@ -31,8 +38,10 @@ type LogoRowItem = { name: string; logo: string }
 
 type LogoRowProps = {
   items: LogoRowItem[]
-  /** Left edge of each logo's box, in order. */
-  lefts: number[]
+  /** Left edge of the first logo's box. */
+  startLeft: number
+  /** Gap between one logo's box and the next — the thing being kept equal. */
+  gap: number
   /** The ribbon's centre where it crosses the middle of the canvas. */
   centreY: number
   width: number
@@ -55,9 +64,13 @@ type LogoRowProps = {
 /** Half the canvas — the point the ribbons are turned about. */
 const CANVAS_MID_X = 755.5
 
+/** The canvas's own width — the point a tiled row has cleared the screen. */
+const CANVAS_WIDTH = 1511
+
 export default function LogoRow({
   items,
-  lefts,
+  startLeft,
+  gap,
   centreY,
   width,
   height,
@@ -65,21 +78,28 @@ export default function LogoRow({
   rotate = 0,
 }: LogoRowProps) {
   const slope = Math.sin((tilt * Math.PI) / 180)
+  const period = width + gap
+
+  // +1 past however many whole periods fit, so the row always runs at least
+  // one logo past the canvas edge rather than stopping flush with it.
+  const count = Math.ceil((CANVAS_WIDTH - startLeft) / period) + 1
 
   return (
     <>
-      {items.map((item, i) => {
+      {Array.from({ length: count }, (_, i) => {
+        const item = items[i % items.length]
+        const left = startLeft + i * period
         // Where the ribbon's centre has got to by this logo's own centre.
-        const centreX = lefts[i] + width / 2
+        const centreX = left + width / 2
         const y = centreY + (centreX - CANVAS_MID_X) * slope
 
         return (
           <div
-            key={item.name}
+            key={`${item.name}-${i}`}
             className="absolute"
             style={{
               top: y - height / 2,
-              left: lefts[i],
+              left,
               width,
               height,
               transform: rotate ? `rotate(${rotate}deg)` : undefined,
