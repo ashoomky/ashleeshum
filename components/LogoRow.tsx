@@ -25,22 +25,26 @@
 // parallel to the ribbon, which reads as more tilt than the design wants. The
 // logos ride the ribbon's line while sitting straighter than it does.
 //
-// POSITIONS ARE GENERATED, NOT LISTED: a fixed `lefts` array is what produced
-// the bug this replaced — a short, hand-placed list runs out partway across
-// the ribbon, leaving it visibly empty past the last logo. Instead the row
-// tiles `items` end to end, cycling back to the start of the list, all the
-// way from the canvas's left edge to its right.
+// THIS IS A BLEED, LIKE THE RIBBON IT RIDES — pass it to Band's `bleed`, not
+// as an ordinary child. It used to live inside the canvas and fill exactly
+// its 1511 width, which fixed one bug (a logo sliced by the canvas clip,
+// mid-shape) by trading it for another: the canvas only fills the true
+// browser width when the viewport's aspect is width-limited. The moment it
+// isn't — any ordinary widescreen monitor, where height is the tighter
+// constraint — the canvas renders narrower than the window, and a row tiled
+// to just the canvas stopped short of the real edge with visible ribbon
+// (and olive letterbox past that) left bare on both sides. The ribbon itself
+// never had this problem because it's a bleed already, drawn at 120% of the
+// actual viewport rather than of the canvas.
 //
-// THE GAP IS A TARGET, NOT A FIXED VALUE. Filling the full canvas width with
-// a constant gap almost never lands the last logo exactly on the far edge —
-// it either stops short (blank ribbon after it) or overshoots (the last logo
-// sliced in half by the canvas clip, which read as a stray black triangle
-// when this was `Math.ceil(...) + 1` and the sliced logo happened to be
-// Charles & Keith's solid-black square). Both are wrong for a row that's
-// meant to look edge-to-edge, so instead the row picks however many logos —
-// the count nearest `gap` — actually divide the width evenly, then spreads
-// them at the gap THAT does, which lands the last logo's right edge exactly
-// on the canvas's right edge with none held back.
+// So the row now positions itself the same way: `calc(50% + (x - mid)px *
+// var(--canvas-scale))`, i.e. real screen px out from the canvas's own
+// centre, and it tiles generously past both sides of the canvas (see
+// OVERSCAN) rather than trying to land a last logo exactly on any one edge.
+// Overshooting and letting the section's own overflow clip it is what the
+// ribbon already does; a logo sliced there reads as the pattern continuing
+// off whatever screen it happens to be on, not as a rendering bug — the
+// difference from before is that there's no visible gap after the cut.
 
 import Image from 'next/image'
 
@@ -48,8 +52,7 @@ type LogoRowItem = { name: string; logo: string }
 
 type LogoRowProps = {
   items: LogoRowItem[]
-  /** Roughly how far apart each logo should sit — see the file header for why
-   *  this is adjusted slightly rather than used exactly. */
+  /** Gap between one logo's box and the next. */
   gap: number
   /** The ribbon's centre where it crosses the middle of the canvas. */
   centreY: number
@@ -68,37 +71,30 @@ type LogoRowProps = {
    * under it. Defaults to upright.
    */
   rotate?: number
+  /**
+   * Band's `offsetY`, which a bleed does not get for free (see Band's own
+   * doc for `bleed`) — has to be added here the same way Credibility's
+   * Ribbon adds it to its own `top`, or the row rides a different line than
+   * the ribbon under it.
+   */
+  offsetY?: number
 }
 
-/** Half the canvas — the point the ribbons are turned about. */
+/** Half the canvas, in both axes — what a design coordinate is measured
+ *  against to land in the right place on screen. */
 const CANVAS_MID_X = 755.5
-
-/** The canvas's own width — both edges a tiled row now fills exactly. */
+const CANVAS_MID_Y = 478
 const CANVAS_WIDTH = 1511
 
 /**
- * How many copies of a `width`-wide logo, `targetGap` apart, best fill
- * `available` px edge to edge — then the gap that actually makes that count
- * span exactly `available`, which is never quite `targetGap` (that's the
- * point: a whole number of logos essentially never divides the width with
- * the exact gap asked for).
+ * How far past the canvas's own [0, 1511] span to keep tiling, in design px,
+ * on each side. Exists for the same reason the ribbon is drawn at 120% of
+ * the viewport rather than 100% of the canvas: on a wide monitor the canvas
+ * is height-limited and narrower than the screen. 1200 comfortably covers
+ * even a 32:9 ultrawide (measured: the canvas falls about 1060px short of
+ * the true edge on each side at that aspect).
  */
-function fill(available: number, width: number, targetGap: number) {
-  const period = width + targetGap
-  const low = Math.max(1, Math.floor(available / period))
-  const high = low + 1
-  let count = low
-  let bestGap = count > 1 ? (available - count * width) / (count - 1) : available - width
-  for (const candidate of [low, high]) {
-    const candidateGap = candidate > 1 ? (available - candidate * width) / (candidate - 1) : available - width
-    if (candidateGap < 0) continue
-    if (Math.abs(candidateGap - targetGap) < Math.abs(bestGap - targetGap)) {
-      count = candidate
-      bestGap = candidateGap
-    }
-  }
-  return { count, gap: bestGap }
-}
+const OVERSCAN = 1200
 
 export default function LogoRow({
   items,
@@ -108,29 +104,33 @@ export default function LogoRow({
   height,
   tilt = 0,
   rotate = 0,
+  offsetY = 0,
 }: LogoRowProps) {
   const slope = Math.sin((tilt * Math.PI) / 180)
-  const { count, gap: actualGap } = fill(CANVAS_WIDTH, width, gap)
-  const period = width + actualGap
+  const period = width + gap
+
+  const first = Math.floor(-OVERSCAN / period)
+  const last = Math.ceil((CANVAS_WIDTH + OVERSCAN) / period)
+  const indexes = Array.from({ length: last - first + 1 }, (_, n) => first + n)
 
   return (
     <>
-      {Array.from({ length: count }, (_, i) => {
-        const item = items[i % items.length]
+      {indexes.map((i) => {
         const left = i * period
+        const item = items[((i % items.length) + items.length) % items.length]
         // Where the ribbon's centre has got to by this logo's own centre.
         const centreX = left + width / 2
         const y = centreY + (centreX - CANVAS_MID_X) * slope
 
         return (
           <div
-            key={`${item.name}-${i}`}
+            key={i}
             className="absolute"
             style={{
-              top: y - height / 2,
-              left,
-              width,
-              height,
+              top: `calc(50% + ${y - height / 2 + offsetY - CANVAS_MID_Y}px * var(--canvas-scale, 1))`,
+              left: `calc(50% + ${left - CANVAS_MID_X}px * var(--canvas-scale, 1))`,
+              width: `calc(${width}px * var(--canvas-scale, 1))`,
+              height: `calc(${height}px * var(--canvas-scale, 1))`,
               transform: rotate ? `rotate(${rotate}deg)` : undefined,
             }}
           >

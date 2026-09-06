@@ -31,9 +31,8 @@ const CANVAS_MID_Y = 478
 
 /**
  * How far the band's content is nudged down to centre it on screen. The
- * ribbons are bleeds, drawn outside the frame, so Band's own offsetY does not
- * reach them — they add it here instead, or they come away from the logo rows
- * that ride them.
+ * ribbons — and the logo rows riding them — are bleeds, drawn outside the
+ * frame, so Band's own offsetY does not reach them; each adds it back itself.
  */
 const OFFSET_Y = 55
 
@@ -74,9 +73,96 @@ export default function Credibility() {
         <>
           <Ribbon top={166} className="rotate-band" />
           <Ribbon top={519} className="rotate-band-alt" />
+
+          {/*
+            Brands, turned 3deg to sit with the ribbon and seated on its
+            centre line rather than a fixed y — see LogoRow. The spec's
+            "2475-2489 line" is where that centre crosses the middle of the
+            canvas; from there the 3deg turn carries it down about 38px by
+            the right of this row, and the row follows it.
+
+            FROM THE SCREENSHOT: 160 square rather than the spec's ~128,
+            which nearly fills the ribbon. A bleed like the ribbon itself,
+            not a child of the frame — see LogoRow for why: the frame only
+            reaches the true screen edge when the canvas's aspect happens to
+            match the window's, so a row confined to it stops short on any
+            ordinary widescreen monitor, leaving bare ribbon after the last
+            logo.
+          */}
+          <LogoRow
+            items={brands}
+            gap={16}
+            centreY={252.78}
+            width={160}
+            height={160}
+            tilt={3}
+            rotate={1.5}
+            offsetY={OFFSET_Y}
+          />
+
+          {/*
+            FROM THE SCREENSHOT: six marks feeding the row, not the spec's
+            four — CapCut and DaVinci join the study and certification ones,
+            which is where the `tools` list finally has a home. Sized into a
+            200x120 box rather than by height alone, so each fills its slot
+            as far as its own proportions allow: these run from 1.74 to 3.45
+            wide-to-tall, so HubSpot comes out 200x58 where DaVinci is
+            120x120.
+
+            Seated on the ribbon's own centre rather than the spec's
+            2800-2811 line, and following it: the -1deg turn lifts that
+            centre from y594 at the right of the row to y617 at the left, so
+            no single y keeps every logo on the ribbon and each takes the one
+            belonging to its own x.
+          */}
+          <LogoRow
+            items={[...experience, ...tools]}
+            gap={58}
+            centreY={605.78}
+            width={200}
+            height={120}
+            tilt={-1}
+            offsetY={OFFSET_Y}
+          />
         </>
       }
     >
+      {/* Phone mockup, 375x666 at 565,2352 — PhoneFrame's large size exactly.
+          A three-second cut of each portrait reel, stitched into one loop —
+          a highlight reel rather than any one clip, since no single pillar
+          owns the phone that sits beside all three's logos. Ambient, same
+          treatment as the About camera: autoplay, looping, muted, no
+          controls — this is a backdrop, not something to interact with. */}
+      <div className="absolute" style={{ top: 120, left: 565 }}>
+        <PhoneFrame size="large">
+          <video
+            src={highlightReel.video}
+            poster={highlightReel.poster}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+          />
+        </PhoneFrame>
+      </div>
+
+      {/*
+        FROM THE SCREENSHOT: the star, sitting over the phone's top left
+        corner. The spec records it as belonging to this section but gives no
+        coordinate. The box is a little larger than the star because the file
+        carries 8px of padding down its left edge. Drawn after the phone so it
+        stays on top of it.
+      */}
+      <Prop
+        src={credibilityProps.star}
+        alt=""
+        width={138}
+        height={135}
+        top={61}
+        left={508}
+      />
+
       {/*
         Turned with the band so it sits parallel just above it, rather than
         cutting across it. The band drops 27px over this title's width, so an
@@ -115,91 +201,6 @@ export default function Credibility() {
       >
         {experienceHeading}
       </h2>
-
-      {/*
-        Brands, turned 3deg to sit with the ribbon and seated on its centre
-        line rather than a fixed y — see LogoRow. The spec's "2475-2489 line"
-        is where that centre crosses the middle of the canvas; from there the
-        3deg turn carries it down about 38px by the right of this row, and the
-        row follows it.
-
-        FROM THE SCREENSHOT: 160 square rather than the spec's ~128, which
-        nearly fills the ribbon. Only 3 brands exist, so LogoRow repeats them,
-        edge to edge across the whole canvas rather than the spec's one lap
-        starting at x1057 — a fixed count left most of the ribbon bare.
-      */}
-      <LogoRow
-        items={brands}
-        gap={16}
-        centreY={252.78}
-        width={160}
-        height={160}
-        tilt={3}
-        rotate={1.5}
-      />
-
-      {/*
-        FROM THE SCREENSHOT: six marks feeding the row, not the spec's four —
-        CapCut and DaVinci join the study and certification ones, which is
-        where the `tools` list finally has a home. Sized into a 200x120 box
-        rather than by height alone, so each fills its slot as far as its own
-        proportions allow: these run from 1.74 to 3.45 wide-to-tall, so
-        HubSpot comes out 200x58 where DaVinci is 120x120. Repeats edge to
-        edge past the sixth, same reasoning as the brand row above.
-
-        Seated on the ribbon's own centre rather than the spec's 2800-2811
-        line, and following it: the -1deg turn lifts that centre from y594 at
-        the right of the row to y617 at the left, so no single y keeps every
-        logo on the ribbon and each takes the one belonging to its own x.
-      */}
-      <LogoRow
-        items={[...experience, ...tools]}
-        gap={58}
-        centreY={605.78}
-        width={200}
-        height={120}
-        tilt={-1}
-      />
-
-      {/* Phone mockup, 375x666 at 565,2352 — PhoneFrame's large size exactly.
-          Drawn after both logo rows, not before: the lower row's third mark
-          (left 527, width 200) falls under the phone's own 565-940 span, and
-          painting the phone last is what puts it in front rather than the
-          logo showing through on top of it.
-          A three-second cut of each portrait reel, stitched into one loop —
-          a highlight reel rather than any one clip, since no single pillar
-          owns the phone that sits beside all three's logos. Ambient, same
-          treatment as the About camera: autoplay, looping, muted, no
-          controls — this is a backdrop, not something to interact with. */}
-      <div className="absolute" style={{ top: 120, left: 565 }}>
-        <PhoneFrame size="large">
-          <video
-            src={highlightReel.video}
-            poster={highlightReel.poster}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover"
-          />
-        </PhoneFrame>
-      </div>
-
-      {/*
-        FROM THE SCREENSHOT: the star, sitting over the phone's top left
-        corner. The spec records it as belonging to this section but gives no
-        coordinate. The box is a little larger than the star because the file
-        carries 8px of padding down its left edge. Drawn after the phone so it
-        stays on top of it, same as before.
-      */}
-      <Prop
-        src={credibilityProps.star}
-        alt=""
-        width={138}
-        height={135}
-        top={61}
-        left={508}
-      />
     </Band>
   )
 }
