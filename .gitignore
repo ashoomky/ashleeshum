@@ -43,3 +43,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# project instructions for Claude Code — kept locally, not on the public repo
+# (GitHub flags a repo as "built by Claude" once it sees this file tracked)
+/CLAUDE.md
