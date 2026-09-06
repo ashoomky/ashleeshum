@@ -66,9 +66,9 @@ export const hero = {
   },
   tagline: 'ugc / marketing portfolio',
   socials: [
-    { platform: 'instagram', href: '[INSTAGRAM URL]' },
-    { platform: 'tiktok', href: '[TIKTOK URL]' },
-    { platform: 'youtube', href: 'https://youtube.com/@ashoomky' },
+    { platform: 'instagram', href: 'https://www.instagram.com/ashoom.ky/?hl=en' },
+    { platform: 'tiktok', href: 'https://www.tiktok.com/@ashoom.ky?lang=en' },
+    { platform: 'youtube', href: 'https://youtube.com/@ashoomky?si=aQhS3PYbzbOoD1i2' },
   ],
   props: {
     // The "A" of "Ashlee" is artwork, not type — only "shlee" and "hum" are
