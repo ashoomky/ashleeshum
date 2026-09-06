@@ -103,7 +103,6 @@ const config: Config = {
         'text-col': '564px', // about body column
         chip: '345px', // tagline pill
         'chip-email': '350px', // contact email pill
-        'chip-phone': '213px', // contact phone pill
       },
 
       height: {

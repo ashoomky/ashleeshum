@@ -21,15 +21,19 @@
 // y7968, so every y below is the spec's less that — the headline at page
 // 8184 is 216 into the band.
 //
-// NOT OFFSET: content runs from the flower's top (154) to the chips' bottom
-// (801), in a 956 band — 154px above, 155px below. Centred within a
+// NOT OFFSET: content runs from the flower's top (154) to the chip row's
+// bottom (801), in a 956 band — 154px above, 155px below. Centred within a
 // rounding error already, so no offsetY is needed here, unlike most other
 // sections — which also means the bleed strips (immune to offsetY, same as
 // any bleed) can't drift out of register with the rest of the band anyway.
-// The social row sits beside the chips rather than below them for exactly
-// this reason: added underneath, it would push that span (and the offset
-// needed to re-centre it) around for no reason beyond where three small
-// icons happen to sit.
+// The social row sits beside the email chip rather than below it for
+// exactly this reason: added underneath, it would push that span (and the
+// offset needed to re-centre it) around for no reason beyond where three
+// small icons happen to sit.
+//
+// NO PHONE NUMBER: the second chip used to be a tel: pill: removed at the
+// requester's call, and the social row took its slot (763,761) rather than
+// leaving it empty or sliding over to fill the row some other way.
 //
 // Static.
 
@@ -85,25 +89,11 @@ export default function LetsWorkTogether() {
         <Chip className="w-chip-email font-body text-caption">{contact.email}</Chip>
       </a>
 
-      {/*
-        Phone pill, 213x40 at 763,8729. The tel: URI drops the spaces content
-        displays for reading — a href isn't a display string, and dialers
-        aren't guaranteed to tolerate raw spaces the way most happen to.
-      */}
-      <a
-        href={`tel:${contact.phone.replace(/\s+/g, '')}`}
-        className="absolute no-underline"
-        style={{ top: 761, left: 763 }}
-      >
-        <Chip className="w-chip-phone font-body text-caption">{contact.phone}</Chip>
-      </a>
-
-      {/* Beside the two chips, not under them — vertically centred on their
-          own 40px row (761 + (40-30)/2), starting a 30px gap past the phone
-          pill's own right edge (763 + 213). Big enough to read against the
-          plum, plain enough not to compete with the email/phone pair that
-          are the actual point of this section. */}
-      <SocialLinks className="absolute gap-4 text-cream" iconSize={30} style={{ top: 766, left: 1006 }} />
+      {/* Takes the phone pill's old slot (763,761) rather than sitting
+          further along the row — the number's gone, and this is what's
+          there now instead of a gap. Still vertically centred on the same
+          40px row as the email chip: 761 + (40-30)/2 for a 30px icon. */}
+      <SocialLinks className="absolute gap-4 text-cream" iconSize={30} style={{ top: 766, left: 763 }} />
     </Band>
   )
 }

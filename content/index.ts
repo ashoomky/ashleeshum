@@ -378,7 +378,6 @@ export const testimonials = [
 export const contact = {
   heading: "let's work together!!",
   email: 'ashoomky.business@gmail.com',
-  phone: '+64 21 236 3800',
   props: { flower: '/props/flower.png' },
 }
 
