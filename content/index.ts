@@ -193,6 +193,18 @@ export const credibilityProps = {
   star: '/props/prop-small-2.png', // cream and black, 8-pointed
 }
 
+/**
+ * The first 3 seconds of each of the 8 portrait reels (life-01/02/03,
+ * travel-01/02, food-01/02/03 — travel-03 is the one landscape source, left
+ * out), concatenated in that order. Lives in its own screen behind
+ * Credibility's phone, standing in for any single pillar's clip since this
+ * phone sits beside all three's logos, not one.
+ */
+export const highlightReel = {
+  video: '/credibility/highlight-reel.mp4',
+  poster: '/credibility/highlight-reel-poster.jpg',
+}
+
 // ============================================================ pillars
 
 // NOT YET EXPORTED: the three `paper` notes below. Every other path here points

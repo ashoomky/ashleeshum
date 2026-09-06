@@ -22,6 +22,7 @@ import {
   credibilityProps,
   experience,
   experienceHeading,
+  highlightReel,
   tools,
 } from '@/content'
 
@@ -77,9 +78,23 @@ export default function Credibility() {
       }
     >
       {/* Phone mockup, 375x666 at 565,2352 — PhoneFrame's large size exactly.
-          Its screen is left empty so the ribbon behind shows through it. */}
+          A three-second cut of each portrait reel, stitched into one loop —
+          a highlight reel rather than any one clip, since no single pillar
+          owns the phone that sits beside all three's logos. Ambient, same
+          treatment as the About camera: autoplay, looping, muted, no
+          controls — this is a backdrop, not something to interact with. */}
       <div className="absolute" style={{ top: 120, left: 565 }}>
-        <PhoneFrame size="large" />
+        <PhoneFrame size="large">
+          <video
+            src={highlightReel.video}
+            poster={highlightReel.poster}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+          />
+        </PhoneFrame>
       </div>
 
       {/*
