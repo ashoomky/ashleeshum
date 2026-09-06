@@ -69,10 +69,13 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
     props: [
       { top: 119, left: 396, width: 185, height: 185 },
       // The laptop, tucked over the note's bottom-right corner rather than
-      // its middle. Dropped from 650 with the note's own height increase
-      // below, so it still just reaches the note's last couple of lines
-      // rather than sliding up to cover the middle of a now-taller paragraph.
-      { top: 700, left: 1237, width: 259, height: 255 },
+      // its middle. Dropped from 700, which still sat over the paragraph's
+      // last few lines — 770 clears the current copy with a small gap below
+      // it, at the cost of some of the laptop's own bottom edge running past
+      // the canvas, an accepted bleed rather than covering copy meant to be
+      // read. Depends on the offer copy staying roughly this length; a much
+      // longer rewrite would need this revisited.
+      { top: 770, left: 1237, width: 259, height: 255 },
     ],
     // Raised from 130: at that top the "ifestyle content" text itself (not
     // just the L's swash) ran 36px past the phones' top edge and behind them.
@@ -155,11 +158,12 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
     // section, and lifestyle is where that section starts.
     <Band id={pillar.id === 'lifestyle' ? 'work' : undefined} className="bg-cream" offsetY={layout.offsetY}>
       {/*
-        The note is the bottommost layer of the three — paper, then the
-        heading, then the phones on top of both. That's what lets the title's
-        oversized initial dip slightly behind a phone (Lifestyle's L behind
-        its second phone) without either the paper or the copy on it ever
-        showing through a phone's bezel.
+        Paper at the bottom, then props, then the heading, then the phones on
+        top of all three. That's what lets the title's oversized initial dip
+        slightly behind a phone (Lifestyle's L behind its second phone)
+        without the paper, the copy on it, or a prop ever showing through a
+        phone's bezel — and what keeps the heading itself readable over
+        Travel's plane, which sits right across its own heading's text.
       */}
       <div className="absolute" style={layout.note}>
         <Image src={PAPER} alt="" fill sizes={`${layout.note.width}px`} className="object-cover" />
@@ -179,8 +183,6 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
         </div>
       </div>
 
-      <PillarHeading heading={pillar.heading} {...layout.heading} />
-
       {layout.props.map((spot, i) => (
         <Prop
           key={pillar.props[i]}
@@ -192,6 +194,12 @@ export default function Pillar({ pillar }: { pillar: PillarData }) {
           left={spot.left}
         />
       ))}
+
+      {/* After the props, not before: Travel's plane sits right where its
+          heading's own text runs, and the plane used to win that overlap —
+          it isn't decorative in the same way a prop tucked into blank space
+          is, so the readable heading stays on top of it instead. */}
+      <PillarHeading heading={pillar.heading} {...layout.heading} />
 
       {layout.phones.map((spot, i) => (
         <div key={`${spot.top}-${spot.left}`} className="absolute" style={{ top: spot.top, left: spot.left }}>

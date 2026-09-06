@@ -216,7 +216,7 @@ export const pillars = [
     subCaption: 'incl. beauty, fashion, self development',
     offerLabel: '',
     offer:
-      'my lifestyle content is engaging and aesthetic, providing relateable and inspirational content. i can create content that is both entertaining and informative, while also being visually appealing.',
+      'my lifestyle content is engaging and aesthetic, providing relateable and inspirational content. a few niches of mine contain content about beauty, fashion and self development!',
     props: ['/props/prop-lifestyle-1.png', '/props/prop-lifestyle-2.png'],
     paper: '/props/paper-note-lifestyle.png',
   },
@@ -234,7 +234,7 @@ export const pillars = [
     heading: 'Food content',
     offerLabel: '',
     offer:
-      'my love for food can be felt through the screen - i have a knack for making food look amazing on camera, and create awareness and engagement with food brands / restaurants through my content.',
+      'my love for food can be felt through the screen - i have a knack for making food look amazing on camera, and creating awareness and engagement with food brands / restaurants through my content.',
     props: ['/props/prop-food.png'],
     paper: '/props/paper-note-food.png',
   },
