@@ -214,18 +214,18 @@ export const pillars = [
     id: 'lifestyle' as Pillar,
     heading: 'Lifestyle content',
     subCaption: 'incl. beauty, fashion, self development',
-    offerLabel: 'what i can offer you:',
+    offerLabel: '',
     offer:
-      'my lifestyle content is diverse and engaging, often inspiring people and [FINISH THIS SENTENCE — still blank in Figma]',
+      'my lifestyle content is engaging and aesthetic, providing relateable and inspirational content. i can create content that is both entertaining and informative, while also being visually appealing.',
     props: ['/props/prop-lifestyle-1.png', '/props/prop-lifestyle-2.png'],
     paper: '/props/paper-note-lifestyle.png',
   },
   {
     id: 'travel' as Pillar,
     heading: 'Travel content',
-    offerLabel: 'what i can offer you:',
+    offerLabel: '',
     offer:
-      'my travel content is well rehearsed and informational for people wanting to travel to places, displaying fun times while also being educational',
+      'my travel content is fun and enticing for people wanting to travel, exhibiting fun times while also containing educational information about the location.',
     props: ['/props/prop-travel.png'],
     paper: '/props/paper-note-travel.png',
   },
@@ -234,7 +234,7 @@ export const pillars = [
     heading: 'Food content',
     offerLabel: '',
     offer:
-      'my love for food can be felt through the screen - i have a knack for making food look amazing on camera, reach out for collabs!',
+      'my love for food can be felt through the screen - i have a knack for making food look amazing on camera, and create awareness and engagement with food brands / restaurants through my content.',
     props: ['/props/prop-food.png'],
     paper: '/props/paper-note-food.png',
   },

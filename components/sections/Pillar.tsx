@@ -69,9 +69,10 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
     props: [
       { top: 119, left: 396, width: 185, height: 185 },
       // The laptop, tucked over the note's bottom-right corner rather than
-      // its middle — the offer copy runs to y695, so this only reaches the
-      // note's last line instead of sitting across the paragraph.
-      { top: 650, left: 1237, width: 259, height: 255 },
+      // its middle. Dropped from 650 with the note's own height increase
+      // below, so it still just reaches the note's last couple of lines
+      // rather than sliding up to cover the middle of a now-taller paragraph.
+      { top: 700, left: 1237, width: 259, height: 255 },
     ],
     // Raised from 130: at that top the "ifestyle content" text itself (not
     // just the L's swash) ran 36px past the phones' top edge and behind them.
@@ -80,13 +81,20 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
     // paper — and the copy on it — never touches the screen. Narrowed from
     // 540 to keep its right edge where it was. Dropped from 230 to clear the
     // heading's own text, which — set at this width — runs to y300.
-    note: { top: 320, left: 1066, width: 445, height: 410 },
-    subCaption: { top: 860, left: 113, width: 420 },
-    // Re-centred after the heading moved up to clear the phones: content now
-    // runs from the heading's 84 to the sub-caption's ~884, so -6 (not the
-    // old -23, measured against the heading's former 130) centres it in the
-    // 956 band — 78px above, 78px below.
-    offsetY: -6,
+    //
+    // Height raised from 410 to 500: the offer copy grew once the real
+    // sentence replaced the placeholder, and at 410 the paragraph's last
+    // line ran about 40px past the paper's own bottom edge onto the bare
+    // cream underneath it.
+    note: { top: 320, left: 1066, width: 445, height: 500 },
+    // Raised from 860, closer to the phones' own bottom edge (264+549=813).
+    subCaption: { top: 830, left: 113, width: 420 },
+    // Re-centred with the sub-caption's own move: content runs from the
+    // heading's 84 to the sub-caption's ~854 (830 + one caption line), a
+    // 770px span, so 9 (not the previous -6, measured against the
+    // sub-caption's former 860) centres it in the 956 band — 93px above,
+    // 93px below.
+    offsetY: 9,
   },
 
   travel: {
@@ -101,7 +109,12 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
       { top: 231, left: 482 },
       { top: 504, left: 817, landscape: true },
     ],
-    props: [{ top: 71, left: 529, width: 375, height: 375 }],
+    // Moved up and right from 71,529: the plane's own box overlapped the
+    // second phone by 262px of its 375 width, which hid most of the
+    // fuselage and tail behind it and left only the nose poking out above.
+    // Shifting it up and to the right pulls it clear of the phone, so more
+    // of the plane shows rather than just the cockpit.
+    props: [{ top: 20, left: 610, width: 375, height: 375 }],
     // Raised from 110: the "ravel content" text itself ran 49px behind the
     // first two phones' top edge, same issue as Lifestyle's heading.
     heading: { top: 51, left: 106 },
@@ -118,9 +131,12 @@ const LAYOUTS: Record<PillarData['id'], PillarLayout> = {
       { top: 244, left: 834 },
       { top: 244, left: 1143 },
     ],
-    // Raised from 614: the offer text ends at y567, so this only needs to
-    // clear that by a bit rather than the old 47px gap.
-    props: [{ top: 590, left: 151, width: 277, height: 159 }],
+    // Moved up beside "Food content" from 590,151 (by the note, at the
+    // bottom of the band) — the same spot Lifestyle's smoothie and Travel's
+    // plane take beside their own headings, which Food's one prop didn't
+    // until now. Right edge overlaps the heading's own left edge by 30px,
+    // same tucked-beside relationship as Lifestyle's prop and its heading.
+    props: [{ top: 100, left: 230, width: 277, height: 159 }],
     heading: { top: 72, left: 477 },
     // Runs off the left edge in the frame, as it does in the design; the
     // band's own clip is what cuts it.
