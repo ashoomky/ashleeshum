@@ -148,74 +148,66 @@ export default function Hero() {
         priority
       />
 
-      {/* The monogram "A": 543x380 at 61,192. Artwork, not type. */}
-      <Prop
-        src={hero.props.monogram}
-        alt=""
-        width={543}
-        height={380}
-        top={192}
-        left={61}
-        priority
-      />
-
       {/*
-        Flower, top left of the greeting. PLACED BY EYE off a screenshot of the
-        Figma frame — figmaspec lists the asset but records no coordinate for
-        it — so this is the one element here that is not measured. The visible
-        bloom is aimed at 145x100 at 81,122; the box is larger because the file
-        carries transparent padding (17 left, 49 top of 338x298), and Prop
-        places files, not their content. Replace with real numbers when handy.
+        The greeting, name and tagline as one group, nudged down 14px from
+        their spec'd y's — not a Band `offsetY`, which would drag the panel,
+        stars and photostrip down with it and pull them out of alignment
+        with the plum bleed behind the panel (see Band's own doc on that).
+        The right side is already reasonably centred on its own; this text
+        column alone was sitting a touch high in the band.
       */}
-      <Prop
-        src={hero.props.flower}
-        alt=""
-        width={164}
-        height={145}
-        top={98}
-        left={73}
-        priority
-      />
+      <div className="absolute inset-0" style={{ transform: 'translateY(14px)' }}>
+        {/* The monogram "A": 543x380 at 61,192. Artwork, not type. */}
+        <Prop
+          src={hero.props.monogram}
+          alt=""
+          width={543}
+          height={380}
+          top={192}
+          left={61}
+          priority
+        />
 
-      {/* "hi! i'm" at 213,189 — Bootzy 50 / 1px */}
-      <p
-        aria-hidden
-        className="absolute font-signature text-hero-greeting text-plum"
-        style={{ top: 189, left: 213 }}
-      >
-        {hero.greeting}
-      </p>
+        {/* "hi! i'm" at 213,189 — Bootzy 50 / 1px */}
+        <p
+          aria-hidden
+          className="absolute font-signature text-hero-greeting text-plum"
+          style={{ top: 189, left: 213 }}
+        >
+          {hero.greeting}
+        </p>
 
-      {/* "shlee" at 543,214 — Oskon 240 / 4.8px */}
-      <span
-        aria-hidden
-        className="absolute font-label text-hero-name text-plum"
-        style={{ top: 214, left: 543 }}
-      >
-        {hero.nameParts.first}
-      </span>
+        {/* "shlee" at 543,214 — Oskon 240 / 4.8px */}
+        <span
+          aria-hidden
+          className="absolute font-label text-hero-name text-plum"
+          style={{ top: 214, left: 543 }}
+        >
+          {hero.nameParts.first}
+        </span>
 
-      {/* "S" at 398,546 — Demo Motherlane 370 / 7.4px, turned -17deg */}
-      <span
-        aria-hidden
-        className="absolute rotate-initial-s font-display text-hero-initial text-plum"
-        style={{ top: 546, left: 398 }}
-      >
-        {hero.nameParts.initial}
-      </span>
+        {/* "S" at 398,546 — Demo Motherlane 370 / 7.4px, turned -17deg */}
+        <span
+          aria-hidden
+          className="absolute rotate-initial-s font-display text-hero-initial text-plum"
+          style={{ top: 546, left: 398 }}
+        >
+          {hero.nameParts.initial}
+        </span>
 
-      {/* "hum" at 693,418 — Oskon 250 / 5px */}
-      <span
-        aria-hidden
-        className="absolute font-label text-hero-name-lg text-plum"
-        style={{ top: 418, left: 693 }}
-      >
-        {hero.nameParts.last}
-      </span>
+        {/* "hum" at 693,418 — Oskon 250 / 5px */}
+        <span
+          aria-hidden
+          className="absolute font-label text-hero-name-lg text-plum"
+          style={{ top: 418, left: 693 }}
+        >
+          {hero.nameParts.last}
+        </span>
 
-      {/* Tagline pill: 345x40 radius 21 at 662,686 */}
-      <div className="absolute" style={{ top: 686, left: 662 }}>
-        <Chip className="w-chip font-heading text-tagline">{hero.tagline}</Chip>
+        {/* Tagline pill: 345x40 radius 21 at 662,686 */}
+        <div className="absolute" style={{ top: 686, left: 662 }}>
+          <Chip className="w-chip font-heading text-tagline">{hero.tagline}</Chip>
+        </div>
       </div>
 
       {/*
