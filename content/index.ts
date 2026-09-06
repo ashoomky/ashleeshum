@@ -194,11 +194,11 @@ export const credibilityProps = {
 }
 
 /**
- * The first 3 seconds of each of the 8 portrait reels (life-01/02/03,
- * travel-01/02, food-01/02/03 — travel-03 is the one landscape source, left
- * out), concatenated in that order. Lives in its own screen behind
- * Credibility's phone, standing in for any single pillar's clip since this
- * phone sits beside all three's logos, not one.
+ * The first 3 seconds of 7 of the 8 portrait reels (life-01/02/03,
+ * travel-01/02, food-01/03 — travel-03 is the one landscape source, left out;
+ * food-02 cut at the requester's call), concatenated in that order. Lives in
+ * its own screen behind Credibility's phone, standing in for any single
+ * pillar's clip since this phone sits beside all three's logos, not one.
  */
 export const highlightReel = {
   video: '/credibility/highlight-reel.mp4',
