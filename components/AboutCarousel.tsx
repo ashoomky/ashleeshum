@@ -21,12 +21,30 @@
 // none, so slides sit differently in the slot and appear to jump as you page
 // through. object-contain keeps them whole, but they want re-exporting to a
 // common crop.
+//
+// The camera slide alone also carries a video: camera.png's screen is a real
+// transparent cutout (confirmed against the file's own alpha channel), same
+// trick as PhoneFrame's bezel, so the clip sits in the DOM before the image
+// and shows through it rather than needing a slot of its own. It only plays
+// while this is the visible slide — the video unmounts like any other slide's
+// image does the moment you page away, so nothing plays or downloads off
+// screen.
 
 'use client'
 
 import { useState } from 'react'
 import Image from 'next/image'
 import type { AboutSlide } from '@/content'
+
+/**
+ * camera.png's screen cutout as a percentage of the file's own 1228x698 box —
+ * measured off the export's alpha channel, not eyeballed, same reasoning as
+ * PhoneFrame's SCREEN_INSET. Only meaningful for a slide whose aspect ratio
+ * matches the slot (the camera's own 614x349 slot is that ratio by
+ * construction), so this is applied to the slot's own box directly rather
+ * than computed against the rendered image size.
+ */
+const SCREEN_INSET = { left: 11.156, right: 31.759, top: 14.040, bottom: 9.885 }
 
 type Box = { top: number; left: number; width: number; height: number }
 
@@ -54,8 +72,30 @@ function Chevron({ direction }: { direction: 'left' | 'right' }) {
   )
 }
 
+function SpeakerIcon({ muted }: { muted: boolean }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M4 9v6h4l5 4V5L8 9H4Z"
+        fill="currentColor"
+      />
+      {muted ? (
+        <path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      ) : (
+        <path
+          d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+      )}
+    </svg>
+  )
+}
+
 export default function AboutCarousel({ slides, slot, caption, arrows }: AboutCarouselProps) {
   const [index, setIndex] = useState(0)
+  const [muted, setMuted] = useState(true)
   const slide = slides[index]
   const step = (by: number) => setIndex((n) => (n + by + slides.length) % slides.length)
 
@@ -74,6 +114,47 @@ export default function AboutCarousel({ slides, slot, caption, arrows }: AboutCa
     <>
       {/* The slot every slide takes its turn in, the camera included. */}
       <div className="absolute" style={slot}>
+        {slide.video && (
+          <>
+            <video
+              key={slide.video}
+              src={slide.video}
+              poster={slide.posterImage}
+              autoPlay
+              loop
+              muted={muted}
+              playsInline
+              className="absolute object-cover"
+              style={{
+                // `<video>` is a replaced element: an absolutely positioned
+                // one sized only by left/right/top/bottom keeps its intrinsic
+                // (decoded) size rather than stretching to fill that box, so
+                // width/height need to be explicit percentages rather than
+                // left+right and top+bottom alone.
+                left: `${SCREEN_INSET.left}%`,
+                top: `${SCREEN_INSET.top}%`,
+                width: `${100 - SCREEN_INSET.left - SCREEN_INSET.right}%`,
+                height: `${100 - SCREEN_INSET.top - SCREEN_INSET.bottom}%`,
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setMuted((m) => !m)}
+              aria-label={muted ? 'Unmute video' : 'Mute video'}
+              aria-pressed={!muted}
+              className="absolute z-10 flex h-8 w-8 items-center justify-center rounded-full bg-ink/70 text-cream transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream"
+              style={{
+                // Corner of the video itself, not the camera body — same
+                // insets as the video's own box, plus a small margin so the
+                // button sits just inside its bottom-right corner.
+                right: `calc(${SCREEN_INSET.right}% + 8px)`,
+                bottom: `calc(${SCREEN_INSET.bottom}% + 8px)`,
+              }}
+            >
+              <SpeakerIcon muted={muted} />
+            </button>
+          </>
+        )}
         <Image
           key={slide.image}
           src={slide.image}

@@ -35,7 +35,18 @@ export type Brand = { name: string; logo: string; relationship: Relationship }
 /** A name/logo pair — used for both `experience` and `tools`. */
 export type LogoItem = { name: string; logo: string }
 
-export type AboutSlide = { image: string; alt: string; caption: string }
+export type AboutSlide = {
+  image: string
+  alt: string
+  caption: string
+  /**
+   * The camera slide alone: plays behind camera.png's own transparent screen
+   * cutout, muted and looping, with `posterImage` covering the gap before the
+   * first frame decodes. See AboutCarousel for the cutout's measured inset.
+   */
+  video?: string
+  posterImage?: string
+}
 
 // ============================================================ hero
 
@@ -104,6 +115,8 @@ export const aboutSlides: AboutSlide[] = [
     // Decorative: the caption beneath carries the meaning, as for every slide.
     alt: '',
     caption: '[vlog]',
+    video: '/about/digicam-vid.mp4',
+    posterImage: '/about/digicam-poster.jpg',
   },
   {
     image: '/about/katara.png',
