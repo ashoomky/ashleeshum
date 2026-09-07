@@ -41,7 +41,8 @@ import Band from '@/components/Band'
 import Prop from '@/components/Prop'
 import Chip from '@/components/Chip'
 import SocialLinks from '@/components/SocialLinks'
-import { contact } from '@/content'
+import { Envelope, Globe } from '@/components/SocialIcon'
+import { contact, hero } from '@/content'
 
 /** Half the canvas width (1511/2), for mapping a design x into the section's
  *  own box — see Band's `bleed` doc. */
@@ -92,8 +93,26 @@ export default function LetsWorkTogether() {
       {/* Takes the phone pill's old slot (763,761) rather than sitting
           further along the row — the number's gone, and this is what's
           there now instead of a gap. Still vertically centred on the same
-          40px row as the email chip: 761 + (40-30)/2 for a 30px icon. */}
-      <SocialLinks className="absolute gap-4 text-cream" iconSize={30} style={{ top: 766, left: 763 }} />
+          40px row as the email chip: 761 + (40-30)/2 for a 30px icon.
+
+          Email and portfolio-site icons alongside the three socials, same
+          set Hero's row carries — the email one duplicates the chip to its
+          left, but that's the point: this row matches Hero's link-for-link
+          rather than being its own trimmed-down set. */}
+      <SocialLinks className="absolute gap-4 text-cream" iconSize={30} style={{ top: 766, left: 763 }}>
+        <a href={`mailto:${contact.email}`} aria-label="Email" style={{ width: 30, height: 30 }}>
+          <Envelope />
+        </a>
+        <a
+          href={hero.portfolioHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Portfolio website"
+          style={{ width: 30, height: 30 }}
+        >
+          <Globe />
+        </a>
+      </SocialLinks>
     </Band>
   )
 }
