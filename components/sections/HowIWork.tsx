@@ -39,9 +39,10 @@ const STEPS = [
   { top: 1638, left: 533, width: 300 },
 ]
 
-// Raised 40px from 1287 — plenty of clearance either way (step 4 doesn't
-// start until 1638), just sitting a bit lower than wanted.
-const TESTIMONIAL_TOP = 1247
+// Raised again, 50px from 1247 (which was itself raised 40px from the
+// original 1287) — still clear of both neighbours: step 2's text ends
+// around y623, step 4 doesn't start until 1638.
+const TESTIMONIAL_TOP = 1197
 
 export default function HowIWork() {
   const testimonial = testimonials[0]
