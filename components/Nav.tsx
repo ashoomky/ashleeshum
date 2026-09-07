@@ -18,8 +18,14 @@
 // (`hero.props.flower`), not a separate logo file — it's decorative in both
 // places already, so reusing it as the "back to top" mark rather than
 // exporting a fourth copy of the same flower.
+//
+// `#top`, not `next/link`'s `Link` to `/`: this is a one-page site, so `/`
+// IS the page already on screen — clicking a Link to the route you're
+// already on is a no-op in Next (no route change, so no scroll reset),
+// which is exactly why the lotus used to do nothing. An anchor to Hero's
+// own `id="top"` is a real same-page navigation regardless of current
+// scroll position, same mechanism every other nav link already uses.
 
-import Link from 'next/link'
 import Image from 'next/image'
 import { hero } from '@/content'
 
@@ -43,13 +49,13 @@ export default function Nav() {
         instead of the row's centreline shifting to split the leftover space
         between two unequal siblings.
       */}
-      <Link
-        href="/"
+      <a
+        href="#top"
         aria-label="Back to top"
         className="absolute left-4 flex h-10 w-11 items-center justify-center"
       >
         <Image src={hero.props.flower} alt="" fill sizes="44px" className="object-contain" />
-      </Link>
+      </a>
 
       {LINKS.map((link) => (
         <a key={link.href} href={link.href} className="font-body text-caption text-plum">

@@ -49,6 +49,7 @@ const STARS = [
 export default function Hero() {
   return (
     <Band
+      id="top" // Nav's lotus mark scrolls back here.
       className="bg-thistle"
       /*
         The plum panel carries on to the edge of the screen on every side it
