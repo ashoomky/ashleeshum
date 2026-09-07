@@ -81,6 +81,9 @@ export const hero = {
     { platform: 'tiktok', href: 'https://www.tiktok.com/@ashoom.ky?lang=en' },
     { platform: 'youtube', href: 'https://youtube.com/@ashoomky?si=aQhS3PYbzbOoD1i2' },
   ],
+  // Not a social platform, so it isn't in `socials` above — the separate
+  // professional portfolio site, linked beside the social row on Hero only.
+  portfolioHref: 'https://ashleeshum.com',
   props: {
     // The "A" of "Ashlee" is artwork, not type — only "shlee" and "hum" are
     // live text. 543x380 at 61,192.
@@ -366,10 +369,10 @@ export const processSteps = [
 
 export const testimonials = [
   {
-    handle: 'services',
-    label: 'what i can offer',
+    handle: 'testimonial',
+    label: 'dailybean',
     quote:
-      'i make content for brands alongside myself ranging across lifestyle, food and travel content that feels like a real recommendation, not an ad. i shoot, edit and repurpose it all myself across tiktok, instagram and youtube. always keen to collab, reach out!',
+      'Working with Ashlee was a lovely experience. She has a knack for seamlessly weaving a product into her everyday content, making it feel natural instead of forced. She will take her time to understand your product and find a way to create high-quality videos that feel authentic and relatable at the same time. We would love to collaborate with her again!',
   },
 ]
 

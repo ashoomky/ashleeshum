@@ -24,7 +24,8 @@ import Band from '@/components/Band'
 import Prop from '@/components/Prop'
 import Chip from '@/components/Chip'
 import SocialLinks from '@/components/SocialLinks'
-import { hero } from '@/content'
+import { Envelope, Globe } from '@/components/SocialIcon'
+import { hero, contact } from '@/content'
 
 /**
  * Eleven 34px stars scattered across the plum panel. figmaspec records the
@@ -220,7 +221,25 @@ export default function Hero() {
           spec's numbers in favour of a simple, evenly-spaced line under the
           tagline instead.
         */}
-        <SocialLinks className="absolute gap-4 text-plum" iconSize={26} style={{ top: 746, left: 662 }} />
+        <SocialLinks className="absolute gap-4 text-plum" iconSize={26} style={{ top: 746, left: 662 }}>
+          {/* Two more than a social platform row needs — a way to email
+              directly, and a link out to the separate professional
+              portfolio site — so they're passed as children rather than
+              taught to the platform → icon map SocialLinks keeps for
+              `hero.socials` itself. */}
+          <a href={`mailto:${contact.email}`} aria-label="Email" style={{ width: 26, height: 26 }}>
+            <Envelope />
+          </a>
+          <a
+            href={hero.portfolioHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Portfolio website"
+            style={{ width: 26, height: 26 }}
+          >
+            <Globe />
+          </a>
+        </SocialLinks>
       </div>
     </Band>
   )

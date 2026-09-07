@@ -57,3 +57,17 @@ export function Envelope() {
     </svg>
   )
 }
+
+/** The "elsewhere on the web" mark — Hero's link out to the portfolio site,
+ *  ashleeshum.com. Not one of `hero.socials` (it isn't a social platform),
+ *  so it's a plain sibling icon rather than something the platform → icon
+ *  map in SocialLinks needs to know about. */
+export function Globe() {
+  return (
+    <svg className="h-full w-full" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
+      <ellipse cx="12" cy="12" rx="4" ry="9" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M3 12h18M4.4 7h15.2M4.4 17h15.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  )
+}
