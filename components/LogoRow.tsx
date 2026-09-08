@@ -49,8 +49,19 @@
 // MARQUEE: the tiled items sit inside one `.marquee-row` wrapper (styles in
 // globals.css) rather than being individually animated, sized and placed
 // with `inset-0` so every item's own `calc(50% + ...)` math keeps resolving
-// against the same box it always has. See globals.css for why the existing
-// overscan-tiling makes the loop seamless for free.
+// against the same box it always has.
+//
+// THE SHIFT IS ONE FULL CYCLE (every item once), NOT ONE ITEM'S OWN PERIOD —
+// shifting by a single period looked seamless on paper (the tiling repeats
+// with that period) but wasn't: it rotates which item sits in which slot,
+// so the reset from -period back to 0 swaps every logo in place, which reads
+// as a visible reshuffle rather than a smooth loop. Shifting by items.length
+// periods lands each item back in the exact slot it started in, so the
+// reset is genuinely invisible. See `cycleLength` below, and OVERSCAN, which
+// has to cover a whole cycle of buffer now rather than just a letterbox
+// margin — a marquee running for a whole cycle before resetting needs that
+// much untranslated tiling in reserve on the leading side, or the reset
+// point becomes visible as a gap instead of a reshuffle.
 
 import type { CSSProperties } from 'react'
 import Image from 'next/image'
@@ -102,13 +113,14 @@ const CANVAS_WIDTH = 1511
 
 /**
  * How far past the canvas's own [0, 1511] span to keep tiling, in design px,
- * on each side. Exists for the same reason the ribbon is drawn at 120% of
- * the viewport rather than 100% of the canvas: on a wide monitor the canvas
- * is height-limited and narrower than the screen. 1200 comfortably covers
- * even a 32:9 ultrawide (measured: the canvas falls about 1060px short of
- * the true edge on each side at that aspect).
+ * on each side, BEFORE adding a cycle's worth of marquee buffer (below).
+ * Exists for the same reason the ribbon is drawn at 120% of the viewport
+ * rather than 100% of the canvas: on a wide monitor the canvas is
+ * height-limited and narrower than the screen. 1200 comfortably covers even
+ * a 32:9 ultrawide (measured: the canvas falls about 1060px short of the
+ * true edge on each side at that aspect).
  */
-const OVERSCAN = 1200
+const LETTERBOX_BUFFER = 1200
 
 export default function LogoRow({
   items,
@@ -124,9 +136,15 @@ export default function LogoRow({
 }: LogoRowProps) {
   const slope = Math.sin((tilt * Math.PI) / 180)
   const period = width + gap
+  const cycleLength = items.length * period
 
-  const first = Math.floor(-OVERSCAN / period)
-  const last = Math.ceil((CANVAS_WIDTH + OVERSCAN) / period)
+  // The letterbox margin, plus a full cycle so the leading edge always has
+  // a cycle's worth of tiling in reserve to scroll into — otherwise the
+  // reset point (now a whole cycle away instead of one period) runs past
+  // where LETTERBOX_BUFFER alone would have covered it.
+  const overscan = LETTERBOX_BUFFER + cycleLength
+  const first = Math.floor(-overscan / period)
+  const last = Math.ceil((CANVAS_WIDTH + overscan) / period)
   const indexes = Array.from({ length: last - first + 1 }, (_, n) => first + n)
 
   return (
@@ -134,8 +152,8 @@ export default function LogoRow({
       className="marquee-row absolute inset-0"
       style={
         {
-          '--marquee-shift': `calc(${period}px * var(--canvas-scale, 1))`,
-          '--marquee-duration': `${period / speed}s`,
+          '--marquee-shift': `calc(${cycleLength}px * var(--canvas-scale, 1))`,
+          '--marquee-duration': `${cycleLength / speed}s`,
           animationDirection: direction === 'right' ? 'reverse' : 'normal',
         } as CSSProperties
       }

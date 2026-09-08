@@ -30,15 +30,20 @@ html {
  *
  * The seamless loop needs no duplicated content, unlike most marquee
  * recipes: LogoRow already tiles its items edge-to-edge (and well past
- * both edges — see its own OVERSCAN), so shifting that whole field left by
- * exactly one item's own period and snapping back is invisible — the
- * pattern one period later is indistinguishable from where it started,
- * because it was already repeating.
+ * both edges — see its own overscan). What made the reset actually
+ * invisible took a second attempt, though: shifting by just one item's own
+ * period looked repeating on paper, but each period holds a DIFFERENT item
+ * (brand 1, then 2, then 3...), so a one-period shift rotates which logo
+ * sits in which slot — the reset back to 0 then visibly reshuffles every
+ * logo in place instead of scrolling smoothly. The shift has to be a whole
+ * cycle (every item once, `--marquee-shift` = items.length periods) so each
+ * item lands back in the exact slot it started in and the reset is
+ * genuinely a no-op.
  *
  * --marquee-shift (real px, already carries `--canvas-scale`) and
  * --marquee-duration (seconds, derived from the row's own DESIGN-space
- * period so it scales with the rest of the page instead of drifting at a
- * fixed screen speed) are set per-row inline by LogoRow.
+ * cycle length so it scales with the rest of the page instead of drifting
+ * at a fixed screen speed) are set per-row inline by LogoRow.
  */
 @keyframes credibility-marquee {
   to {
