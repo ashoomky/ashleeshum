@@ -20,3 +20,42 @@ html {
     scroll-behavior: smooth;
   }
 }
+
+/*
+ * Credibility's two logo ribbons (see LogoRow) — a continuous marquee drift,
+ * modelled on the "social media banner" Framer marketplace component (closed
+ * source, no inspectable implementation — this is a from-scratch CSS build
+ * of the same idea: seamless infinite scroll, direction configurable per
+ * row, pauses on hover, off entirely under reduced motion).
+ *
+ * The seamless loop needs no duplicated content, unlike most marquee
+ * recipes: LogoRow already tiles its items edge-to-edge (and well past
+ * both edges — see its own OVERSCAN), so shifting that whole field left by
+ * exactly one item's own period and snapping back is invisible — the
+ * pattern one period later is indistinguishable from where it started,
+ * because it was already repeating.
+ *
+ * --marquee-shift (real px, already carries `--canvas-scale`) and
+ * --marquee-duration (seconds, derived from the row's own DESIGN-space
+ * period so it scales with the rest of the page instead of drifting at a
+ * fixed screen speed) are set per-row inline by LogoRow.
+ */
+@keyframes credibility-marquee {
+  to {
+    transform: translateX(calc(-1 * var(--marquee-shift, 0px)));
+  }
+}
+
+.marquee-row {
+  animation: credibility-marquee var(--marquee-duration, 6s) linear infinite;
+}
+
+.marquee-row:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-row {
+    animation: none;
+  }
+}

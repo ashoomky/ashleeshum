@@ -45,7 +45,14 @@
 // ribbon already does; a logo sliced there reads as the pattern continuing
 // off whatever screen it happens to be on, not as a rendering bug — the
 // difference from before is that there's no visible gap after the cut.
+//
+// MARQUEE: the tiled items sit inside one `.marquee-row` wrapper (styles in
+// globals.css) rather than being individually animated, sized and placed
+// with `inset-0` so every item's own `calc(50% + ...)` math keeps resolving
+// against the same box it always has. See globals.css for why the existing
+// overscan-tiling makes the loop seamless for free.
 
+import type { CSSProperties } from 'react'
 import Image from 'next/image'
 
 type LogoRowItem = { name: string; logo: string }
@@ -78,6 +85,13 @@ type LogoRowProps = {
    * the ribbon under it.
    */
   offsetY?: number
+  /** Which way the marquee drifts. Credibility gives its two rows opposite
+   *  directions — a deliberate counter-scroll, not a default worth hiding. */
+  direction?: 'left' | 'right'
+  /** Design px/second — the same for every row by default, so a wider
+   *  period (more gap, bigger logos) just means a longer loop, not a
+   *  visually faster one. */
+  speed?: number
 }
 
 /** Half the canvas, in both axes — what a design coordinate is measured
@@ -105,6 +119,8 @@ export default function LogoRow({
   tilt = 0,
   rotate = 0,
   offsetY = 0,
+  direction = 'left',
+  speed = 35,
 }: LogoRowProps) {
   const slope = Math.sin((tilt * Math.PI) / 180)
   const period = width + gap
@@ -114,7 +130,16 @@ export default function LogoRow({
   const indexes = Array.from({ length: last - first + 1 }, (_, n) => first + n)
 
   return (
-    <>
+    <div
+      className="marquee-row absolute inset-0"
+      style={
+        {
+          '--marquee-shift': `calc(${period}px * var(--canvas-scale, 1))`,
+          '--marquee-duration': `${period / speed}s`,
+          animationDirection: direction === 'right' ? 'reverse' : 'normal',
+        } as CSSProperties
+      }
+    >
       {indexes.map((i) => {
         const left = i * period
         const item = items[((i % items.length) + items.length) % items.length]
@@ -144,6 +169,6 @@ export default function LogoRow({
           </div>
         )
       })}
-    </>
+    </div>
   )
 }

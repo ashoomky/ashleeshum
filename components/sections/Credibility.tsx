@@ -98,6 +98,7 @@ export default function Credibility() {
             tilt={3}
             rotate={1.5}
             offsetY={OFFSET_Y}
+            direction="left"
           />
 
           {/*
@@ -114,6 +115,11 @@ export default function Credibility() {
             centre from y594 at the right of the row to y617 at the left, so
             no single y keeps every logo on the ribbon and each takes the one
             belonging to its own x.
+
+            direction="right", against the brand row's "left": a deliberate
+            counter-scroll rather than both drifting the same way, the same
+            "wall of logos" motif most marquee templates default to when
+            they stack more than one row.
           */}
           <LogoRow
             items={[...experience, ...tools]}
@@ -123,6 +129,7 @@ export default function Credibility() {
             height={120}
             tilt={-1}
             offsetY={OFFSET_Y}
+            direction="right"
           />
         </>
       }
