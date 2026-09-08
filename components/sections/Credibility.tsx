@@ -88,6 +88,10 @@ export default function Credibility() {
             match the window's, so a row confined to it stops short on any
             ordinary widescreen monitor, leaving bare ribbon after the last
             logo.
+
+            rotate matches tilt exactly (3) at the requester's call — each
+            logo's own edges parallel to the ribbon, not just its centre
+            riding the ribbon's line.
           */}
           <LogoRow
             items={brands}
@@ -96,7 +100,7 @@ export default function Credibility() {
             width={160}
             height={160}
             tilt={3}
-            rotate={1.5}
+            rotate={3}
             offsetY={OFFSET_Y}
             direction="left"
           />

@@ -40,14 +40,21 @@ html {
  * item lands back in the exact slot it started in and the reset is
  * genuinely a no-op.
  *
- * --marquee-shift (real px, already carries `--canvas-scale`) and
- * --marquee-duration (seconds, derived from the row's own DESIGN-space
- * cycle length so it scales with the rest of the page instead of drifting
- * at a fixed screen speed) are set per-row inline by LogoRow.
+ * --marquee-shift and --marquee-shift-y (real px, already carrying
+ * `--canvas-scale`) and --marquee-duration (seconds, derived from the row's
+ * own DESIGN-space cycle length so it scales with the rest of the page
+ * instead of drifting at a fixed screen speed) are set per-row inline by
+ * LogoRow. The two shifts move together, not translateX alone: each item's
+ * own vertical position is fixed to the ribbon's tilted line for its
+ * STATIC x, so x-only motion drags it off that line as it slides — visible
+ * as the row sinking mid-cycle, worst on the steeper-tilted row, then
+ * snapping straight again on reset. Moving diagonally at the ribbon's own
+ * slope keeps every item glued to the line throughout, not just at the
+ * start and end of each loop.
  */
 @keyframes credibility-marquee {
   to {
-    transform: translateX(calc(-1 * var(--marquee-shift, 0px)));
+    transform: translate(calc(-1 * var(--marquee-shift, 0px)), calc(-1 * var(--marquee-shift-y, 0px)));
   }
 }
 

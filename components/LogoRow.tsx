@@ -62,6 +62,16 @@
 // margin — a marquee running for a whole cycle before resetting needs that
 // much untranslated tiling in reserve on the leading side, or the reset
 // point becomes visible as a gap instead of a reshuffle.
+//
+// THE SHIFT IS DIAGONAL, NOT PURELY HORIZONTAL — each item's own `top` is
+// baked in for its STATIC design-space x (`y = f(x)` above, a straight line
+// of slope `slope`); animating x alone without also moving y along that
+// same line drags every item off the ribbon's own diagonal as the animation
+// progresses (most visible on the brands row, whose 3deg tilt is the
+// steepest), reading as the row sinking, then snapping back into place on
+// reset. Translating by `(shift, shift * slope)` together keeps every item
+// exactly on `y = f(x)` at every point in the animation, because f is
+// linear: f(x + dx) = f(x) + dx * slope, which is exactly this translation.
 
 import type { CSSProperties } from 'react'
 import Image from 'next/image'
@@ -82,11 +92,14 @@ type LogoRowProps = {
    */
   tilt?: number
   /**
-   * How far each logo is turned, which is deliberately its own value. Matching
-   * it to `tilt` makes a row sit dead parallel to its ribbon, and at the
-   * ribbons' angles that reads as more tilt than the design wants; turning
-   * them less than the ribbon they ride keeps the row calmer than the ribbon
-   * under it. Defaults to upright.
+   * How far each logo is turned. Its own value rather than always mirroring
+   * `tilt`, because the two answer different questions — `tilt` places a
+   * logo on the ribbon's line, `rotate` decides whether the logo's own
+   * edges sit parallel to that ribbon. Matching it to `tilt` (as Credibility
+   * does for the brand row) is what makes a logo actually parallel; leaving
+   * it lower — or at the 0 default — reads as the logo sitting straighter
+   * than the ribbon underneath it, which is a legitimate look too, just a
+   * different one, not a substitute for parallel.
    */
   rotate?: number
   /**
@@ -153,6 +166,7 @@ export default function LogoRow({
       style={
         {
           '--marquee-shift': `calc(${cycleLength}px * var(--canvas-scale, 1))`,
+          '--marquee-shift-y': `calc(${cycleLength * slope}px * var(--canvas-scale, 1))`,
           '--marquee-duration': `${cycleLength / speed}s`,
           animationDirection: direction === 'right' ? 'reverse' : 'normal',
         } as CSSProperties
