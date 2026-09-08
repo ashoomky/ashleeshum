@@ -41,10 +41,13 @@ export type Reel = {
  */
 export type Relationship = 'paid' | 'gifted' | 'concept'
 
-export type Brand = { name: string; logo: string; relationship: Relationship }
+/** `rotate` overrides the row's own shared angle (LogoRow's `rotate` prop)
+ *  for just this one logo — omit it and the logo just uses the row's angle,
+ *  same as every logo did before this existed. */
+export type Brand = { name: string; logo: string; relationship: Relationship; rotate?: number }
 
 /** A name/logo pair — used for both `experience` and `tools`. */
-export type LogoItem = { name: string; logo: string }
+export type LogoItem = { name: string; logo: string; rotate?: number }
 
 export type AboutSlide = {
   image: string

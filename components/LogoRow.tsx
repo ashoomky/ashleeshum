@@ -25,6 +25,10 @@
 // parallel to the ribbon, which reads as more tilt than the design wants. The
 // logos ride the ribbon's line while sitting straighter than it does.
 //
+// A single logo can override that row-wide angle with its own `rotate` in
+// content (on the `Brand`/`LogoItem` entry itself) — falls back to the row's
+// own `rotate` prop when omitted, so nothing else has to change to add one.
+//
 // THIS IS A BLEED, LIKE THE RIBBON IT RIDES — pass it to Band's `bleed`, not
 // as an ordinary child. It used to live inside the canvas and fill exactly
 // its 1511 width, which fixed one bug (a logo sliced by the canvas clip,
@@ -76,7 +80,13 @@
 import type { CSSProperties } from 'react'
 import Image from 'next/image'
 
-type LogoRowItem = { name: string; logo: string }
+type LogoRowItem = {
+  name: string
+  logo: string
+  /** Overrides the row's own `rotate` for just this logo. Omit to use the
+   *  row's shared angle, same as every logo did before this existed. */
+  rotate?: number
+}
 
 type LogoRowProps = {
   items: LogoRowItem[]
@@ -175,6 +185,8 @@ export default function LogoRow({
       {indexes.map((i) => {
         const left = i * period
         const item = items[((i % items.length) + items.length) % items.length]
+        // This logo's own angle if it has one, otherwise the row's shared one.
+        const itemRotate = item.rotate ?? rotate
         // Where the ribbon's centre has got to by this logo's own centre.
         const centreX = left + width / 2
         const y = centreY + (centreX - CANVAS_MID_X) * slope
@@ -188,7 +200,7 @@ export default function LogoRow({
               left: `calc(50% + ${left - CANVAS_MID_X}px * var(--canvas-scale, 1))`,
               width: `calc(${width}px * var(--canvas-scale, 1))`,
               height: `calc(${height}px * var(--canvas-scale, 1))`,
-              transform: rotate ? `rotate(${rotate}deg)` : undefined,
+              transform: itemRotate ? `rotate(${itemRotate}deg)` : undefined,
             }}
           >
             <Image
